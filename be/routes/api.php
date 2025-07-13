@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\ProductApiController;
 use App\Http\Controllers\Api\CategoryApiController;
 use App\Http\Controllers\Api\ProductAttributeApiController;
 use App\Http\Controllers\Api\ProductValueApiController;
+use App\Http\Controllers\Api\UserApiController;
 
 Route::get('/products', [ProductApiController::class, 'index']);
 Route::get('/products/{id}', [ProductApiController::class, 'show']);
@@ -30,3 +31,8 @@ Route::post('/values', [ProductValueApiController::class, 'store']);
 Route::put('/values/{id}', [ProductValueApiController::class, 'update']);
 Route::delete('/values/{id}', [ProductValueApiController::class, 'destroy']);
 
+Route::get('/users', [UserApiController::class, 'index']);
+Route::get('/users/{id}', [UserApiController::class, 'show']);
+Route::post('/users', [UserApiController::class, 'store']);
+Route::put('/users/{id}', [UserApiController::class, 'update']);
+Route::delete('/users/{id}', [UserApiController::class, 'destroy']);
