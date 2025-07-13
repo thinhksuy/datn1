@@ -8,21 +8,27 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // Seed dữ liệu phụ thuộc trước
+        // Seed dữ liệu phụ thuộc trước (Roles, Categories, Courts)
+        $this->call([
+            RolesTableSeeder::class,
+            CategoriesTableSeeder::class,
+            CourtSeeder::class,
+        ]);
+
+        // Seed dữ liệu chính (Attributes, Products, Values, Variants)
         $this->call([
             ProductAttributeSeeder::class,
             ProductsTableSeeder::class,
             ProductValueSeeder::class,
             ProductVariantSeeder::class,
             ProductVariantValueSeeder::class,
-            $this->call(CourtSeeder::class),
         ]);
 
-        // Seed Order sau khi có user + product
+
+        // Seed Orders và các chi tiết liên quan
         $this->call([
             OrderSeeder::class,
-            // Nếu có OrderDetailSeeder, thêm ở đây
-            // OrderDetailSeeder::class,
+            // OrderDetailSeeder::class, // Nếu có
         ]);
     }
 }
