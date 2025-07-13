@@ -1,0 +1,139 @@
+@extends('layouts.layout')
+
+@section('content')
+<!-- =========================
+     Tiêu đề và breadcrumb
+============================ -->
+<div class="head-title">
+    <div class="left">
+        <h1>Sản phẩm</h1>
+        <ul class="breadcrumb">
+            <li><a href="#">Sản phẩm</a></li>
+            <li><i class='bx bx-chevron-right'></i></li>
+            <li><a class="active" href="#">Danh sách sản phẩm</a></li>
+        </ul>
+    </div>
+    <a href="#" class="btn-download">
+        <i class='bx bxs-cloud-download'></i>
+        <span class="text">Download PDF</span>
+    </a>
+</div>
+
+<!-- =========================
+     Form lọc sản phẩm
+============================ -->
+<div class="body-content">
+    <form action="{{ route('admin.products.index') }}" method="GET" class="filter-form" style="margin-bottom: 20px;">
+        <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: flex-end;">
+            <div>
+                <label for="keyword">Tìm kiếm:</label>
+                <input type="text" name="keyword" id="keyword" value="{{ request('keyword') }}">
+            </div>
+            <div>
+                <label for="brand">Thương hiệu:</label>
+                <input type="text" name="brand" id="brand" value="{{ request('brand') }}">
+            </div>
+            <div>
+                <label for="price_min">Giá từ:</label>
+                <input type="number" name="price_min" id="price_min" value="{{ request('price_min') }}" min="0">
+            </div>
+            <div>
+                <label for="price_max">Đến:</label>
+                <input type="number" name="price_max" id="price_max" value="{{ request('price_max') }}" min="0">
+            </div>
+            <div>
+                <label for="category">Danh mục:</label>
+                <select name="category" id="category">
+                    <option value="">Tất cả</option>
+                    @foreach ($categories as $cat)
+                        <option value="{{ $cat->Categories_ID }}" {{ request('category') == $cat->Categories_ID ? 'selected' : '' }}>
+                            {{ $cat->Name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
+                <label for="status">Trạng thái:</label>
+                <select name="status" id="status">
+                    <option value="">Tất cả</option>
+                    <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>Hiển thị</option>
+                    <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>Ẩn</option>
+                </select>
+            </div>
+            <div>
+                <button type="submit">Lọc</button>
+                <a href="{{ route('admin.products.index') }}" style="margin-left: 10px;">Đặt lại</a>
+            </div>
+        </div>
+    </form>
+
+    <!-- =========================
+         Bảng danh sách sản phẩm
+    ============================ -->
+    <table>
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Ảnh</th>
+                <th>Tên sản phẩm</th>
+                <th>Giá</th>
+                <th>Giá KM</th>
+                <th>Số lượng</th>
+                <th>Thương hiệu</th>
+                <th>Thuộc tính</th>
+                <th>Mô tả</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach($products as $key => $product)
+            <tr>
+                <td>{{ $key + 1 + ($products->currentPage() - 1) * $products->perPage() }}</td>
+                <td>
+                    @if($product->images->count())
+                        <img src="{{ asset($product->images->first()->Image_path) }}" width="50">
+                    @else
+                        <img src="{{ asset('WebAdmin/img/no-image.png') }}" width="50">
+                    @endif
+                </td>
+                <td>{{ $product->Name }}</td>
+                <td>{{ number_format($product->Price, 0, ',', '.') }}₫</td>
+                <td>{{ number_format($product->Discount_price, 0, ',', '.') }}₫</td>
+                <td>{{ $product->Quantity }}</td>
+                <td>{{ $product->Brand }}</td>
+
+                <!-- Hiển thị thuộc tính sản phẩm -->
+                <td>
+                    @foreach($product->variants as $variant)
+                        @foreach($variant->values as $value)
+                            @if($value->attribute)
+                                <div><strong>{{ $value->attribute->Name }}:</strong> {{ $value->Value }}</div>
+                            @endif
+                        @endforeach
+                    @endforeach
+                </td>
+
+                <td>{{ Str::limit($product->Description, 40) }}</td>
+                <td>{{ $product->Status ? 'Hiển thị' : 'Ẩn' }}</td>
+                <td>
+                    <a href="{{ route('admin.products.edit', $product->Product_ID) }}">Sửa</a> |
+                    <form action="{{ route('admin.products.destroy', $product->Product_ID) }}" method="POST" style="display:inline-block;">
+                        @csrf
+                        @method('DELETE')
+                        <button onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?')">Xóa</button>
+                    </form>
+                </td>
+            </tr>
+        @endforeach
+        </tbody>
+    </table>
+
+    <!-- =========================
+         Phân trang sản phẩm
+    ============================ -->
+    <div class="pagination-wrapper">
+        {{ $products->onEachSide(1)->links('vendor.pagination.custom') }}
+    </div>
+</div>
+@endsection
