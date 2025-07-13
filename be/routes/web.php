@@ -64,4 +64,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
 Route::resource('posts', PostController::class);
 Route::resource('comments', CommentController::class);
 Route::resource('product_reviews', ProductReviewController::class);
+Route::resource('post_categories', PostCategoryController::class);
+
 });
