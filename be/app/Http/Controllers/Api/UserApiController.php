@@ -20,7 +20,7 @@ class UserApiController extends Controller
     public function show($id)
     {
         $user = User::find($id);
-        if (!$user) {
+        if (! $user) {
             return response()->json(['message' => 'User not found'], 404);
         }
         return response()->json($user, 200);
@@ -30,9 +30,16 @@ class UserApiController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6',
+            'Role_ID'       => 'required|exists:roles,Role_ID',
+            'Name'          => 'required|string|max:255',
+            'Email'         => 'required|email|unique:user,Email',
+            'Password'      => 'required|string|min:6',
+            'Phone'         => 'nullable|string|max:20',
+            'Gender'        => 'nullable|in:male,female,0,1',
+            'Date_of_birth' => 'nullable|date',
+            'Avatar'        => 'nullable|string',
+            'Status'        => 'nullable|boolean',
+            'Address'       => 'nullable|string|max:500',
         ]);
 
         if ($validator->fails()) {
@@ -40,9 +47,16 @@ class UserApiController extends Controller
         }
 
         $user = User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'password' => Hash::make($request->password),
+            'Role_ID'       => $request->Role_ID,
+            'Name'          => $request->Name,
+            'Email'         => $request->Email,
+            'Password'      => Hash::make($request->Password),
+            'Phone'         => $request->Phone,
+            'Gender'        => $request->Gender,
+            'Date_of_birth' => $request->Date_of_birth,
+            'Avatar'        => $request->Avatar,
+            'Status'        => $request->Status ?? 1,
+            'Address'       => $request->Address,
         ]);
 
         return response()->json($user, 201);
@@ -52,28 +66,38 @@ class UserApiController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::find($id);
-        if (!$user) {
+        if (! $user) {
             return response()->json(['message' => 'User not found'], 404);
         }
 
         $validator = Validator::make($request->all(), [
-            'name'     => 'sometimes|required|string|max:255',
-            'email'    => "sometimes|required|email|unique:users,email,{$id}",
-            'password' => 'sometimes|required|string|min:6',
+            'Role_ID'       => 'sometimes|required|exists:roles,Role_ID',
+            'Name'          => 'sometimes|required|string|max:255',
+            'Email'         => "sometimes|required|email|unique:user,Email,{$id},ID",
+            'Password'      => 'sometimes|required|string|min:6',
+            'Phone'         => 'nullable|string|max:20',
+            'Gender'        => 'nullable|in:male,female,0,1',
+            'Date_of_birth' => 'nullable|date',
+            'Avatar'        => 'nullable|string',
+            'Status'        => 'nullable|boolean',
+            'Address'       => 'nullable|string|max:500',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        if ($request->has('name')) {
-            $user->name = $request->name;
-        }
-        if ($request->has('email')) {
-            $user->email = $request->email;
-        }
-        if ($request->has('password')) {
-            $user->password = Hash::make($request->password);
+        // Duyệt tất cả các field đã validate và gán
+        foreach ($request->only([
+            'Role_ID','Name','Email','Password',
+            'Phone','Gender','Date_of_birth','Avatar',
+            'Status','Address'
+        ]) as $key => $value) {
+            if ($key === 'Password') {
+                $user->$key = Hash::make($value);
+            } else {
+                $user->$key = $value;
+            }
         }
         $user->save();
 
@@ -84,7 +108,7 @@ class UserApiController extends Controller
     public function destroy($id)
     {
         $user = User::find($id);
-        if (!$user) {
+        if (! $user) {
             return response()->json(['message' => 'User not found'], 404);
         }
         $user->delete();

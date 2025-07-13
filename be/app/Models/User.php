@@ -22,7 +22,7 @@ class User extends Authenticatable
         'Role_ID',
         'Name',
         'Email',
-        'Password', 
+        'Password',
         'Phone',
         'Gender',
         'Date_of_birth',
@@ -57,5 +57,5 @@ class User extends Authenticatable
     {
         return 'ID'; // Dùng 'ID' thay vì mặc định 'id'
     }
-    
+
 }
