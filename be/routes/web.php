@@ -16,6 +16,12 @@ use App\Http\Controllers\Admin\ProductStatisticsController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\CourtController;
 use App\Http\Controllers\Admin\CourtBookingController;
+use App\Http\Controllers\VoucherController;
+use App\Http\Controllers\PostCategoryController;
+    use App\Http\Controllers\PostController;
+    use App\Http\Controllers\CommentController;
+
+use App\Http\Controllers\ProductReviewController;
 
 
 
@@ -51,4 +57,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::resource('courts', CourtController::class);
     Route::resource('bookings', CourtBookingController::class);
+
+
+
+     Route::resource('vouchers', VoucherController::class);
+Route::resource('posts', PostController::class);
+Route::resource('comments', CommentController::class);
+Route::resource('product_reviews', ProductReviewController::class);
 });

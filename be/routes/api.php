@@ -38,3 +38,19 @@ Route::put('/users/{id}', [UserApiController::class, 'update']);
 Route::delete('/users/{id}', [UserApiController::class, 'destroy']);
 Route::put('users/{user}', [UserApiController::class, 'update']);
 Route::patch('users/{user}', [UserApiController::class, 'update']);
+
+
+use App\Http\Controllers\Api\VoucherApiController;
+Route::Resource('vouchers', VoucherApiController::class);
+
+use App\Http\Controllers\Api\PostCategoryApiController;
+Route::Resource('post_categories', PostCategoryApiController::class);
+
+use App\Http\Controllers\Api\PostApiController;
+Route::Resource('posts', PostApiController::class);
+
+use App\Http\Controllers\Api\CommentApiController;
+Route::Resource('comments', CommentApiController::class);
+
+use App\Http\Controllers\Api\ProductReviewApiController;
+Route::Resource('product_reviews', ProductReviewApiController::class);
