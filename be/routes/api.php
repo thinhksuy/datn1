@@ -36,3 +36,5 @@ Route::get('/users/{id}', [UserApiController::class, 'show']);
 Route::post('/users', [UserApiController::class, 'store']);
 Route::put('/users/{id}', [UserApiController::class, 'update']);
 Route::delete('/users/{id}', [UserApiController::class, 'destroy']);
+Route::put('users/{user}', [UserApiController::class, 'update']);
+Route::patch('users/{user}', [UserApiController::class, 'update']);

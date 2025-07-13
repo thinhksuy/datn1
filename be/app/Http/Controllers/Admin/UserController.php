@@ -10,9 +10,7 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
-    // ========================
     // Hiển thị danh sách user
-    // ========================
     public function index(Request $request)
 {
     $query = \App\Models\User::with('role');
@@ -38,19 +36,14 @@ class UserController extends Controller
     return view('admin.users.index', compact('users', 'roles'));
 }
 
-
-    // ========================
     // Hiển thị form tạo user
-    // ========================
     public function create()
     {
         $roles = Role::all();
         return view('admin.users.create', compact('roles'));
     }
 
-    // =====================
     // Lưu user mới vào DB
-    // =====================
     public function store(Request $request)
     {
         $validated = $request->validate([
