@@ -31,14 +31,14 @@
 		</li>
 
 		<!-- Danh mục sản phẩm có submenu -->
-		<li class="has-submenu active">
+		<li class="has-submenu">
 			<a href="#" class="toggle-submenu">
 				<i class='bx bxs-shopping-bag-alt'></i>
 				<span class="text">Danh mục sản phẩm</span>
 			</a>
 			<ul class="submenu">
 				<li>
-					<a href="#" class="active">
+					<a href="#">
 						<i class='bx bx-list-ul'></i>  
 						<span class="text">Danh sách danh mục</span>
 					</a>
@@ -100,7 +100,7 @@
 			</ul>
 		</li> -->
 
-		<li class="has-submenu">
+		<li class="has-submenu active">
 			<a href="#">
 				<i class='bx bx-envelope'></i>
 				<span class="text">Bài viết</span>
@@ -113,7 +113,7 @@
 					</a>
 				</li>
 				<li>
-					<a href="#">
+					<a href="#"   class="active1">
 						<i class='bx bx-plus'></i>
 						<span class="text">Thêm bài viết</span>
 					</a>
@@ -257,60 +257,76 @@
 
 		<!-- MAIN -->
 		<main>
-			<div class="head-title">
-				<div class="left">
-					<h1>Danh mục sản phẩm</h1>
-					<ul class="breadcrumb">
-						<li>
-							<a href="#">Danh mục sản phẩm</a>
-						</li>
-						<li><i class='bx bx-chevron-right' ></i></li>
-						<li>
-							<a class="active" href="#">Danh sách danh mục</a>
-						</li>
-					</ul>
-				</div>
-				<a href="#" class="btn-download">
-					<i class='bx bxs-cloud-download' ></i>
-					<span class="text">Download PDF</span>
-				</a>
-			</div>
-            <div class="body-content">
-    <table>
-        <thead>
-            <tr>
-                <th>STT</th>
-                <th>Ảnh</th>
-                <th>Tên danh mục</th>
-                <th>Mô tả</th>
-                <th>Thao Tác</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td><img src="img/people.png" alt="Ảnh danh mục" width="50"></td>
-                <td>Thể thao</td>
-                <td>Danh mục các sản phẩm thể thao</td>
-                <td>
-                    <button>Xóa</button> | <button>Sửa</button>
-                </td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td><img src="img/category2.png" alt="Ảnh danh mục" width="50"></td>
-                <td>Thời trang</td>
-                <td>Danh mục sản phẩm thời trang nam nữ</td>
-                <td>
-                    <button>Xóa</button> | <button>Sửa</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-            </div>
-		</main>
+    <div class="head-title">
+        <div class="left">
+            <h1>Thêm Voucher</h1>
+            <ul class="breadcrumb">
+                <li>
+                    <a href="#">Voucher</a>
+                </li>
+                <li><i class='bx bx-chevron-right'></i></li>
+                <li>
+                    <a class="active" href="#">Thêm voucher</a>
+                </li>
+            </ul>
+        </div>
+        <a href="#" class="btn-download">
+            <i class='bx bxs-cloud-download'></i>
+            <span class="text">Download PDF</span>
+        </a>
+    </div>
 
-			
+    <div class="form-add">
+        <h2>Thêm Voucher Mới</h2>
+        <form action="#" method="POST">
+            <div class="form-group">
+                <label for="code">Mã Voucher</label>
+                <input type="text" id="code" name="code" required>
+            </div>
+
+            <div class="form-group">
+                <label for="discount_type">Loại giảm giá</label>
+                <select id="discount_type" name="discount_type" required>
+                    <option value="percentage">Phần trăm</option>
+                    <option value="fixed">Cố định</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="discount_value">Giá trị giảm</label>
+                <input type="number" step="0.01" id="discount_value" name="discount_value" required>
+            </div>
+
+            <div class="form-group">
+                <label for="max_uses">Lượt dùng tối đa</label>
+                <input type="number" id="max_uses" name="max_uses">
+            </div>
+
+            <div class="form-group">
+                <label for="expires">Ngày hết hạn</label>
+                <input type="date" id="expires" name="expires">
+            </div>
+
+            <div class="form-group">
+                <label for="applies_to">Áp dụng cho</label>
+                <input type="text" id="applies_to" name="applies_to" placeholder="user, order, booking,...">
+            </div>
+
+            <!-- <div class="form-group">
+                <label for="paid_at">Ngày tạo</label>
+                <input type="datetime-local" id="paid_at" name="paid_at">
+            </div> -->
+
+            <div class="form-actions">
+                <button type="submit">Thêm Voucher</button>
+            </div>
+        </form>
+    </div>
+</main>
+
+
+
+        
 	</section>
 	<!-- CONTENT -->
      <script src="script.js"></script>

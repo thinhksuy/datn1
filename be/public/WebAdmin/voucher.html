@@ -31,14 +31,14 @@
 		</li>
 
 		<!-- Danh mục sản phẩm có submenu -->
-		<li class="has-submenu active">
+		<li class="has-submenu">
 			<a href="#" class="toggle-submenu">
 				<i class='bx bxs-shopping-bag-alt'></i>
 				<span class="text">Danh mục sản phẩm</span>
 			</a>
 			<ul class="submenu">
 				<li>
-					<a href="#" class="active">
+					<a href="#">
 						<i class='bx bx-list-ul'></i>  
 						<span class="text">Danh sách danh mục</span>
 					</a>
@@ -143,14 +143,14 @@
 			</ul>
 		</li>
 
-		<li class="has-submenu">
+		<li class="has-submenu active">
 			<a href="#">
 				<i class='bx bx-cart'></i>
 				<span class="text">Đơn hàng</span>
 			</a>
 			<ul class="submenu">
 				<li>
-					<a href="#">
+					<a href="#" class="active1">
 						<i class='bx bx-list-ul'></i>
 						<span class="text">Danh sách đơn hàng</span>
 					</a>
@@ -259,14 +259,14 @@
 		<main>
 			<div class="head-title">
 				<div class="left">
-					<h1>Danh mục sản phẩm</h1>
+					<h1>Đơn hàng</h1>
 					<ul class="breadcrumb">
 						<li>
-							<a href="#">Danh mục sản phẩm</a>
+							<a href="#">Đơn hàng</a>
 						</li>
 						<li><i class='bx bx-chevron-right' ></i></li>
 						<li>
-							<a class="active" href="#">Danh sách danh mục</a>
+							<a class="active" href="#">Danh sách đơn hàng</a>
 						</li>
 					</ul>
 				</div>
@@ -276,38 +276,39 @@
 				</a>
 			</div>
             <div class="body-content">
+    <h1>Quản lý Voucher</h1>
+
+    <a href="#" class="btn-add">+ Thêm Voucher</a>
+
     <table>
-        <thead>
-            <tr>
-                <th>STT</th>
-                <th>Ảnh</th>
-                <th>Tên danh mục</th>
-                <th>Mô tả</th>
-                <th>Thao Tác</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td><img src="img/people.png" alt="Ảnh danh mục" width="50"></td>
-                <td>Thể thao</td>
-                <td>Danh mục các sản phẩm thể thao</td>
-                <td>
-                    <button>Xóa</button> | <button>Sửa</button>
-                </td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td><img src="img/category2.png" alt="Ảnh danh mục" width="50"></td>
-                <td>Thời trang</td>
-                <td>Danh mục sản phẩm thời trang nam nữ</td>
-                <td>
-                    <button>Xóa</button> | <button>Sửa</button>
-                </td>
-            </tr>
-        </tbody>
+      <thead>
+        <tr>
+          <th>Mã</th>
+          <th>Loại giảm</th>
+          <th>Giá trị</th>
+          <th>Giới hạn sử dụng</th>
+          <th>Hạn dùng</th>
+          <th>Áp dụng cho</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>SALE50</td>
+          <td>Phần trăm</td>
+          <td>50%</td>
+          <td>100 lần</td>
+          <td>2025-12-31</td>
+          <td>Toàn bộ đơn hàng</td>
+          <td class="action-buttons">
+            <a href="#" class="btn-edit">Sửa</a>
+            <a href="#" class="btn-delete">Xoá</a>
+          </td>
+        </tr>
+        <!-- Thêm các dòng voucher khác tại đây -->
+      </tbody>
     </table>
-            </div>
+  </div>
 		</main>
 
 			

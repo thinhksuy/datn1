@@ -31,14 +31,14 @@
 		</li>
 
 		<!-- Danh mục sản phẩm có submenu -->
-		<li class="has-submenu active">
+		<li class="has-submenu">
 			<a href="#" class="toggle-submenu">
 				<i class='bx bxs-shopping-bag-alt'></i>
 				<span class="text">Danh mục sản phẩm</span>
 			</a>
 			<ul class="submenu">
 				<li>
-					<a href="#" class="active">
+					<a href="#">
 						<i class='bx bx-list-ul'></i>  
 						<span class="text">Danh sách danh mục</span>
 					</a>
@@ -143,14 +143,14 @@
 			</ul>
 		</li>
 
-		<li class="has-submenu">
+		<li class="has-submenu active">
 			<a href="#">
 				<i class='bx bx-cart'></i>
 				<span class="text">Đơn hàng</span>
 			</a>
 			<ul class="submenu">
 				<li>
-					<a href="#">
+					<a href="#" class="active1">
 						<i class='bx bx-list-ul'></i>
 						<span class="text">Danh sách đơn hàng</span>
 					</a>
@@ -257,58 +257,50 @@
 
 		<!-- MAIN -->
 		<main>
-			<div class="head-title">
-				<div class="left">
-					<h1>Danh mục sản phẩm</h1>
-					<ul class="breadcrumb">
-						<li>
-							<a href="#">Danh mục sản phẩm</a>
-						</li>
-						<li><i class='bx bx-chevron-right' ></i></li>
-						<li>
-							<a class="active" href="#">Danh sách danh mục</a>
-						</li>
-					</ul>
-				</div>
-				<a href="#" class="btn-download">
-					<i class='bx bxs-cloud-download' ></i>
-					<span class="text">Download PDF</span>
-				</a>
-			</div>
-            <div class="body-content">
-    <table>
-        <thead>
-            <tr>
-                <th>STT</th>
-                <th>Ảnh</th>
-                <th>Tên danh mục</th>
-                <th>Mô tả</th>
-                <th>Thao Tác</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td><img src="img/people.png" alt="Ảnh danh mục" width="50"></td>
-                <td>Thể thao</td>
-                <td>Danh mục các sản phẩm thể thao</td>
-                <td>
-                    <button>Xóa</button> | <button>Sửa</button>
-                </td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td><img src="img/category2.png" alt="Ảnh danh mục" width="50"></td>
-                <td>Thời trang</td>
-                <td>Danh mục sản phẩm thời trang nam nữ</td>
-                <td>
-                    <button>Xóa</button> | <button>Sửa</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="head-title">
+        <div class="left">
+            <h1>Thêm Danh Mục Bài Viết</h1>
+            <ul class="breadcrumb">
+                <li><a href="#">Bài viết</a></li>
+                <li><i class='bx bx-chevron-right'></i></li>
+                <li><a class="active" href="#">Thêm danh mục</a></li>
+            </ul>
+        </div>
+        <a href="#" class="btn-download">
+            <i class='bx bxs-cloud-download'></i>
+            <span class="text">Download PDF</span>
+        </a>
+    </div>
+
+    <div class="form-add">
+        <h2>Thêm Danh Mục Mới</h2>
+        <form action="#" method="POST">
+            <div class="form-group">
+                <label for="title">Tên danh mục</label>
+                <input type="text" id="title" name="title" required>
             </div>
-		</main>
+
+            
+            <div class="form-group">
+				<label for="description">Mô tả</label>
+				<textarea id="description" name="description" rows="4"></textarea>
+			</div>
+
+            <div class="form-group">
+                <label for="status">Trạng thái</label>
+                <select id="status" name="status" required>
+                    <option value="1">Hiển thị</option>
+                    <option value="0">Ẩn</option>
+                </select>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit">Thêm Danh Mục</button>
+            </div>
+        </form>
+    </div>
+</main>
+
 
 			
 	</section>
