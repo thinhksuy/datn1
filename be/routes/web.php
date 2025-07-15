@@ -18,8 +18,8 @@ use App\Http\Controllers\Admin\CourtController;
 use App\Http\Controllers\Admin\CourtBookingController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\PostCategoryController;
-    use App\Http\Controllers\PostController;
-    use App\Http\Controllers\CommentController;
+use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\CommentController;
 
 use App\Http\Controllers\ProductReviewController;
 
