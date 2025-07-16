@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\PostCategory;
@@ -17,7 +18,9 @@ class PostController extends Controller
 
     public function create()
     {
-        $users = User::all();
+        $users = User::whereHas('role', function($q) {
+            $q->where('name', 'admin');
+        })->get();
         $categories = PostCategory::all();
         return view('posts.create', compact('users', 'categories'));
     }
@@ -36,7 +39,7 @@ class PostController extends Controller
         ]);
 
         Post::create($validated);
-        return redirect()->route('posts.index')->with('success', 'Post created successfully.');
+        return redirect()->route('posts.index')->with('success', '  Post created successfully.');
     }
 
     public function show($id)
@@ -48,7 +51,9 @@ class PostController extends Controller
     public function edit($id)
     {
         $post = Post::findOrFail($id);
-        $users = User::all();
+        $users = User::whereHas('role', function($q) {
+            $q->where('name', 'admin');
+        })->get();
         $categories = PostCategory::all();
         return view('posts.edit', compact('post', 'users', 'categories'));
     }

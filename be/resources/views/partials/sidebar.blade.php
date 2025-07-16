@@ -74,13 +74,13 @@
 			<a href="#"><i class='bx bx-envelope'></i><span class="text">Bài viết</span></a>
 			<ul class="submenu">
 				<li>
-                    <a href="admin.posts.index"  class="{{ request()->routeIs('admin.posts.index') ? 'active1' : '' }}">
+                    <a href="{{ route('admin.posts.index') }}"  class="{{ request()->routeIs('admin.posts.index') ? 'active1' : '' }}">
                         <i class='bx bx-list-ul'></i>
                         <span class="text">Danh sách bài viết</span>
                     </a>
                 </li>
 				<li>
-                    <a href="admin.posts.create"  class="{{ request()->routeIs('admin.posts.create') ? 'active1' : '' }}">
+                    <a href="{{ route('admin.posts.create') }}"  class="{{ request()->routeIs('admin.posts.create') ? 'active1' : '' }}">
                         <i class='bx bx-plus'></i>
                         <span class="text">Thêm bài viết</span>
                     </a>
