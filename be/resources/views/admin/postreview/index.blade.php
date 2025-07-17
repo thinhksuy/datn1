@@ -65,9 +65,9 @@
 
         <td class="action-buttons">
             <!-- Nút Xem -->
-            <button class="admin-button-table">
+            {{-- <button class="admin-button-table">
                 <a href="{{ route('comments.show', $comment->Comment_ID) }}" style="display:block; width:100%; height:100%; color:inherit; text-decoration:none;">Xem</a>
-            </button>
+            </button> --}}
 
             <!-- Nút Xoá -->
             <form action="{{ route('comments.destroy', $comment->Comment_ID) }}" method="POST" style="display:inline;">

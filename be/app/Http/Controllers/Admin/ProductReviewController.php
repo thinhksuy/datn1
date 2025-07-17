@@ -13,16 +13,25 @@ class ProductReviewController extends Controller
 {
     public function index()
     {
-        $reviews = ProductReview::with('product', 'user', 'order')->get();
-        return view('product_reviews.index', compact('reviews'));
+        $reviews = ProductReview::with('product', 'user', 'order')->paginate(10);
+        return view('admin.productreview.index', compact('reviews'));
     }
+    public function toggleStatus($id)
+{
+    $review = ProductReview::findOrFail($id);
+    $review->Status = !$review->Status; // Đảo trạng thái
+    $review->save();
+
+    return redirect()->back()->with('success', 'Cập nhật trạng thái thành công.');
+}
+
 
     public function create()
     {
         $products = Product::all();
         $users = User::all();
         $orders = Order::all();
-        return view('product_reviews.create', compact('products', 'users', 'orders'));
+        return view('admin.comments.create', compact('products', 'users', 'orders'));
     }
 
     public function store(Request $request)
@@ -38,13 +47,13 @@ class ProductReviewController extends Controller
         ]);
 
         ProductReview::create($validated);
-        return redirect()->route('product_reviews.index')->with('success', 'Review created successfully.');
+        return redirect()->route('admin.comments.index')->with('success', 'Review created successfully.');
     }
 
     public function show($id)
     {
         $review = ProductReview::with('product', 'user', 'order')->findOrFail($id);
-        return view('product_reviews.show', compact('review'));
+        return view('admin.comments.ProductReview', compact('review'));
     }
 
     public function edit($id)
@@ -53,7 +62,7 @@ class ProductReviewController extends Controller
         $products = Product::all();
         $users = User::all();
         $orders = Order::all();
-        return view('product_reviews.edit', compact('review', 'products', 'users', 'orders'));
+        return view('admin.comments.edit', compact('review', 'products', 'users', 'orders'));
     }
 
     public function update(Request $request, $id)
@@ -73,13 +82,13 @@ class ProductReviewController extends Controller
         $validated['Updated_at'] = now();
 
         $review->update($validated);
-        return redirect()->route('product_reviews.index')->with('success', 'Review updated successfully.');
+        return redirect()->route('admin.comments.index')->with('success', 'Review updated successfully.');
     }
 
     public function destroy($id)
     {
         $review = ProductReview::findOrFail($id);
         $review->delete();
-        return redirect()->route('product_reviews.index')->with('success', 'Review deleted successfully.');
+        return redirect()->route('admin.comments.index')->with('success', 'Review deleted successfully.');
     }
 }

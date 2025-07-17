@@ -793,6 +793,34 @@ body {
 
 
 
+/* Nút Sửa - xanh dương */
+.admin-button-table.btn-edit {
+    background-color: #3498db;
+}
+
+.admin-button-table.btn-edit:hover {
+    background-color: #2980b9;
+}
+
+/* Nút Xóa - đỏ */
+.admin-button-table.btn-delete {
+    background-color: #e74c3c;
+}
+
+.admin-button-table.btn-delete:hover {
+    background-color: #c0392b;
+}
+
+/* Nút Xem - xanh lá */
+.admin-button-table.btn-view {
+    background-color: #2ecc71;
+}
+
+.admin-button-table.btn-view:hover {
+    background-color: #27ae60;
+}
+
+
 
 /* body content Admin */
 .body-statistics {

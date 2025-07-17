@@ -77,9 +77,9 @@
 
                     <td class="action-buttons">
                         <!-- Nút Xem -->
-                        <button class="admin-button-table">
+                        {{-- <button class="admin-button-table">
                             <a href="{{ route('admin.comments.product.show', $review->Product_review_ID) }}" style="display:block; width:100%; height:100%; color:inherit; text-decoration:none;">Xem</a>
-                        </button>
+                        </button> --}}
 
                         <!-- Nút Xóa -->
                         <form action="{{ route('admin.comments.product.destroy', $review->Product_review_ID) }}" method="POST" style="display:inline;">

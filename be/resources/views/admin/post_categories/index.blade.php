@@ -1,7 +1,6 @@
 @extends('layouts.layout') {{-- Giả sử bạn có layout admin --}}
 
 @section('content')
-<main>
     <div class="head-title">
         <div class="left">
             <h1>Danh Mục Bài Viết</h1>
@@ -73,5 +72,4 @@
         </table>
         {{ $categories->links() }}
     </div>
-</main>
 @endsection

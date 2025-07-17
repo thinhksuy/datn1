@@ -1,44 +1,78 @@
 @extends('layouts.layout')
 
 @section('content')
-<h1>Danh sách bài viết</h1>
 
-@if(session('success'))
-    <div class="alert alert-success">{{ session('success') }}</div>
-@endif
+    <div class="head-title">
+        <div class="left">
+            <h1>Bài viết</h1>
+            <ul class="breadcrumb">
+                <li><a href="#">Bài viết</a></li>
+                <li><i class='bx bx-chevron-right'></i></li>
+                <li><a class="active" href="#">Danh sách bài viết</a></li>
+            </ul>
+        </div>
+        <a href="{{ route('admin.posts.create') }}" class="btn-download">
+            <span class="text">+ Thêm bài viết mới</span>
+        </a>
+    </div>
 
-<a href="{{ route('admin.posts.create') }}" class="btn btn-primary" style="margin-bottom: 15px;">Thêm bài viết mới</a>
+    @if(session('success'))
+        <div class="alert alert-success" style="margin: 15px 0;">{{ session('success') }}</div>
+    @endif
 
-<table class="clean-table" style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: 14px; color: #333;">
-    <thead>
-        <tr style="background-color: #f4f6f8; font-weight: 600; color: #222;">
-            <th style="border: 1px solid #ddd; padding: 10px 15px; text-align: left;">ID</th>
-            <th style="border: 1px solid #ddd; padding: 10px 15px; text-align: left;">Tiêu đề</th>
-            <th style="border: 1px solid #ddd; padding: 10px 15px; text-align: left;">Người đăng</th>
-            <th style="border: 1px solid #ddd; padding: 10px 15px; text-align: left;">Danh mục</th>
-            <th style="border: 1px solid #ddd; padding: 10px 15px; text-align: left;">Trạng thái</th>
-            <th style="border: 1px solid #ddd; padding: 10px 15px; text-align: left;">Hành động</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($posts as $post)
-        <tr style="background-color: {{ $loop->even ? '#f9fafb' : 'white' }}; cursor: pointer;">
-            <td style="border: 1px solid #ddd; padding: 10px 15px;">{{ $post->Post_ID }}</td>
-            <td style="border: 1px solid #ddd; padding: 10px 15px;">{{ $post->Title }}</td>
-            <td style="border: 1px solid #ddd; padding: 10px 15px;">{{ $post->user->Name ?? 'N/A' }}</td>
-            <td style="border: 1px solid #ddd; padding: 10px 15px;">{{ $post->category->Title ?? 'N/A' }}</td>
-            <td style="border: 1px solid #ddd; padding: 10px 15px;">{{ $post->Status ? 'Hiển thị' : 'Ẩn' }}</td>
-            <td style="border: 1px solid #ddd; padding: 10px 15px;">
-                <a href="{{ route('admin.posts.show', $post->Post_ID) }}" class="btn btn-info" style="color: #1a73e8; text-decoration: none; margin-right: 5px;">Xem</a>
-                <a href="{{ route('admin.posts.edit', $post->Post_ID) }}" class="btn btn-warning" style="color: #1a73e8; text-decoration: none; margin-right: 5px;">Sửa</a>
-                <form action="{{ route('admin.posts.destroy', $post->Post_ID) }}" method="POST" style="display:inline-block;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" onclick="return confirm('Bạn có chắc muốn xóa bài viết này?')" class="btn btn-danger" style="background-color: #ff4d4f; border: none; color: white; padding: 5px 10px; cursor: pointer;">Xóa</button>
-                </form>
-            </td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
+    <div class="body-content">
+        <table>
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Tiêu đề</th>
+                    <th>Người viết</th>
+                    <th>Danh mục</th>
+                    <th>Nội dung</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($posts as $key => $post)
+                    <tr>
+                        <td>{{ $key + 1 }}</td>
+                        {{-- <td>
+                            <img src="{{ $post->Thumbnail ?? asset('img/default.png') }}" alt="thumb" width="60" height="40" style="object-fit: cover; border-radius: 4px;">
+                        </td> --}}
+                        <td>{{ $post->Title }}</td>
+                        <td>{{ $post->user->Name ?? 'Không rõ' }}</td>
+                        <td>{{ $post->category->Title ?? 'Không có' }}</td>
+                        <td>{{ Str::limit(strip_tags($post->Content), 50) }}</td>
+                        <td>
+                            <span style="color: {{ $post->Status ? '#28a745' : '#dc3545' }};">
+                                {{ $post->Status ? 'Hiển thị' : 'Ẩn' }}
+                            </span>
+                        </td>
+                        <td class="action-buttons">
+                            <!-- Nút Sửa -->
+                            <button class="admin-button-table btn-edit" style="margin-bottom: 5px;">
+                                <a href="{{ route('admin.posts.edit', $post->Post_ID) }}" style="display:block; width:100%; height:100%; color:inherit; text-decoration:none;">Sửa</a>
+                            </button>
+
+                            <!-- Nút Xóa -->
+                            <form action="{{ route('admin.posts.destroy', $post->Post_ID) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="admin-button-table btn-delete" onclick="return confirm('Bạn có chắc chắn muốn xóa bài viết này?')">Xóa</button>
+                            </form>
+
+                            <!-- Nút Xem -->
+                            <button class="admin-button-table btn-view" style="margin-bottom: 5px;">
+                                <a href="{{ route('admin.posts.show', $post->Post_ID) }}" style="display:block; width:100%; height:100%; color:inherit; text-decoration:none;">Xem</a>
+                            </button>
+                        </td>
+
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+        {{ $posts->links() }}
+    </div>
 @endsection
