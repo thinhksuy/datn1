@@ -14,6 +14,9 @@
             <li><a class="active" href="#">Thêm sản phẩm</a></li>
         </ul>
     </div>
+     <a href="{{ route('admin.products.index') }}" class="btn-download">
+		<span class="text">Quay lại</span>
+	</a>
 </div>
 
 <!-- =========================

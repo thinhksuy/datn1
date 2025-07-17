@@ -3,10 +3,20 @@
 @section('content')
 <main>
     <div class="head-title">
-        <h1>Sửa Voucher</h1>
+    <div class="left">
+        <h1>Chỉnh sửa voucher</h1>
+        <ul class="breadcrumb">
+            <li><a href="#">Voucher</a></li>
+            <li><i class='bx bx-chevron-right'></i></li>
+            <li><a class="active" href="#">Chỉnh sửa voucher</a></li>
+        </ul>
     </div>
+    <a href="{{ route('admin.vouchers.index') }}" class="btn-download">
+        <span class="text">Quay lại</span>
+    </a>
+</div>
 
-    <div class="form-edit">
+    <div class="form-add">
         <h2>Cập nhật thông tin</h2>
 
         <form action="{{ route('admin.vouchers.update', $voucher->Vouchers_ID) }}" method="POST">

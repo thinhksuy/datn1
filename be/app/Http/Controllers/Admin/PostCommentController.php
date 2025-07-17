@@ -7,13 +7,22 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class CommentController extends Controller
+class PostCommentController extends Controller
 {
     public function index()
     {
-        $comments = Comment::with('post', 'user')->get();
-        return view('comments.index', compact('comments'));
+        $comments = Comment::with('post', 'user')->paginate(10);
+        return view('admin.postreview.index', compact('comments'));
     }
+public function updateStatus(Request $request, $id)
+{
+    $comment = Comment::findOrFail($id);
+    $comment->Status = $request->input('status');
+    $comment->Update_at = now();
+    $comment->save();
+
+    return redirect()->back()->with('success', 'Trạng thái bình luận đã được cập nhật.');
+}
 
     public function create()
     {

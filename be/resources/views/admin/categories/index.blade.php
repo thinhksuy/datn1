@@ -12,9 +12,8 @@
 			<li><a class="active" href="#">Danh sách danh mục</a></li>
 		</ul>
 	</div>
-	<a href="#" class="btn-download">
-		<i class='bx bxs-cloud-download'></i>
-		<span class="text">Download PDF</span>
+	<a href="{{ route('admin.categories.create') }}" class="btn-download">
+		<span class="text">+ Thêm danh mục mới</span>
 	</a>
 </div>
 
@@ -42,21 +41,25 @@
             </td>
             <td>{{ $category->Name }}</td>
             <td>{{ $category->Description }}</td>
-            <td>
-                <form action="{{ route('admin.categories.destroy', $category->Categories_ID) }}" method="POST" style="display:inline">
+            <td class="action-buttons">
+                <!-- Nút Sửa -->
+                <button class="admin-button-table">
+                    <a href="{{ route('admin.categories.edit', $category->Categories_ID) }}" style="display: block; width: 100%; height: 100%; color: inherit; text-decoration: none;">Sửa</a>
+                </button>
+
+                <!-- Nút Xoá -->
+                <form action="{{ route('admin.categories.destroy', $category->Categories_ID) }}" method="POST" style="display:inline;">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</button>
+                    <button type="submit" class="admin-button-table btn-delete" onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</button>
                 </form>
-
-                <a href="{{ route('admin.categories.edit', $category->Categories_ID) }}">
-                    <button>Sửa</button>
-                </a>
             </td>
+
         </tr>
     @endforeach
 </tbody>
 
 	</table>
+    {{ $categories->links() }}
 </div>
 @endsection

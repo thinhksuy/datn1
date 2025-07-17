@@ -13,10 +13,9 @@
             <li><a class="active" href="#">Danh sách sản phẩm</a></li>
         </ul>
     </div>
-    <a href="#" class="btn-download">
-        <i class='bx bxs-cloud-download'></i>
-        <span class="text">Download PDF</span>
-    </a>
+    <a href="{{ route('admin.products.create') }}" class="btn-download">
+		<span class="text">+ Thêm sản phẩm mới</span>
+	</a>
 </div>
 
 <!-- =========================
@@ -61,9 +60,10 @@
                 </select>
             </div>
             <div>
-                <button type="submit">Lọc</button>
-                <a href="{{ route('admin.products.index') }}" style="margin-left: 10px;">Đặt lại</a>
+                <button type="submit" class="admin-form-loc">Lọc</button>
+                <button type="submit" class="admin-form-loc"><a href="{{ route('admin.products.index') }}">Đặt lại</a></button>
             </div>
+
         </div>
     </form>
 
@@ -116,14 +116,20 @@
 
                 <td>{{ Str::limit($product->Description, 40) }}</td>
                 <td>{{ $product->Status ? 'Hiển thị' : 'Ẩn' }}</td>
-                <td>
-                    <a href="{{ route('admin.products.edit', $product->Product_ID) }}">Sửa</a> |
-                    <form action="{{ route('admin.products.destroy', $product->Product_ID) }}" method="POST" style="display:inline-block;">
+                <td class="action-buttons">
+                    <!-- Nút Sửa -->
+                    <button class="admin-button-table">
+                        <a href="{{ route('admin.products.edit', $product->Product_ID) }}" style="display:block; width:100%; height:100%; color:inherit; text-decoration:none;">Sửa</a>
+                    </button>
+
+                    <!-- Nút Xóa -->
+                    <form action="{{ route('admin.products.destroy', $product->Product_ID) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
-                        <button onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?')">Xóa</button>
+                        <button type="submit" class="admin-button-table btn-delete" onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?')">Xóa</button>
                     </form>
                 </td>
+
             </tr>
         @endforeach
         </tbody>
@@ -132,8 +138,6 @@
     <!-- =========================
          Phân trang sản phẩm
     ============================ -->
-    <div class="pagination-wrapper">
-        {{ $products->onEachSide(1)->links('vendor.pagination.custom') }}
-    </div>
+    {{ $products->links() }}
 </div>
 @endsection

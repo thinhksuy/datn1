@@ -3,78 +3,21 @@
 @section('title', 'Thêm sân cầu lông')
 
 @section('content')
-<style>
-    .form-container {
-        max-width: 700px;
-        margin: 30px auto;
-        padding: 24px;
-        background: #fff;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-    }
 
-    .form-container h2 {
-        margin-bottom: 20px;
-        font-size: 22px;
-        color: #2d3748;
-    }
-
-    .form-group {
-        margin-bottom: 18px;
-    }
-
-    label {
-        display: block;
-        font-weight: 500;
-        margin-bottom: 6px;
-    }
-
-    input[type="text"],
-    input[type="number"],
-    select,
-    textarea {
-        width: 100%;
-        padding: 10px;
-        font-size: 14px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
-
-    .form-error {
-        color: #dc2626;
-        font-size: 13px;
-        margin-top: 4px;
-    }
-
-    textarea {
-        resize: vertical;
-    }
-
-    .form-actions {
-        text-align: right;
-    }
-
-    .form-actions button {
-        background-color: #2563eb;
-        color: #fff;
-        padding: 10px 20px;
-        border: none;
-        font-weight: bold;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-
-    .form-actions button:hover {
-        background-color: #1e40af;
-    }
-
-    .form-note {
-        font-size: 13px;
-        color: #6b7280;
-    }
-</style>
-
-<div class="form-container">
+<div class="head-title">
+        <div class="left">
+            <h1>Chỉnh sửa sân</h1>
+            <ul class="breadcrumb">
+                <li><a href="#">Quản lí sân</a></li>
+                <li><i class='bx bx-chevron-right'></i></li>
+                <li><a class="active" href="#">Chỉnh sửa sân</a></li>
+            </ul>
+        </div>
+        <a href="{{ route('admin.courts.index') }}" class="btn-download">
+            <span class="text">Quay lại</span>
+	</a>
+    </div>
+<div class="form-add">
     <h2>Thêm Sân Cầu Lông</h2>
 
     @if ($errors->any())

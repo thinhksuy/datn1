@@ -14,7 +14,7 @@ class CourtBookingController extends Controller
 {
     public function index()
     {
-$bookings = CourtBooking::with(['court', 'user'])->latest()->get();
+$bookings = CourtBooking::with(['court', 'user'])->latest()->paginate(10);
         return view('admin.bookings.index', compact('bookings'));
     }
 

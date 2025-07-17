@@ -48,7 +48,14 @@ body {
 
 
 
-
+.alert-success {
+        padding: 10px;
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+        border-radius: 4px;
+        margin-bottom: 15px;
+    }
 /* SIDEBAR */
 #sidebar {
 	position: fixed;
@@ -72,18 +79,17 @@ body {
 #sidebar .brand {
 	font-size: 40px;
 	font-weight: 700;
-	height: 20px;
+	height: 30px;
 	display: flex;
 	align-items: center;
 	color: var(--blue);
 	position: sticky;
-	top: 20px;
+	top: 0;
 	left: 0;
 	background: var(--light);
 	z-index: 500;
-	padding-bottom: 20px;
+	padding: 20px;
 	box-sizing: content-box;
-	margin-left: 10px;
 }
 #sidebar .brand img {
 	width: 40px;
@@ -96,7 +102,7 @@ body {
 }
 #sidebar .side-menu {
 	width: 100%;
-	margin-top: 48px;
+	margin-top: 20px;
 }
 #sidebar .side-menu li {
 	background: transparent;
@@ -421,6 +427,7 @@ body {
 	max-height: calc(100vh - 56px);
 	overflow-y: auto;
 	margin-left: 15px;
+    overflow-x: hidden;
 }
 #content main .head-title {
 	display: flex;
@@ -512,7 +519,7 @@ body {
 	color: var(--dark);
 }
 #content main .box-info li .text p {
-	color: var(--dark);	
+	color: var(--dark);
 }
 
 
@@ -588,13 +595,13 @@ body {
 	font-weight: 700;
 }
 #content main .table-data .order table tr td .status.completed {
-	background: var(--blue);
+	background: #24ca69;
 }
 #content main .table-data .order table tr td .status.process {
 	background: var(--yellow);
 }
 #content main .table-data .order table tr td .status.pending {
-	background: var(--orange);
+	background: var(--blue);
 }
 #content main .table-data .order table tr td .status.cancel {
 	background: var(--red);
@@ -657,7 +664,7 @@ body {
     width: 100% !important;
     height: 100% !important;
     max-width: 1100px;
-} 
+}
 
 /* body content Admin */
 .body-content {
@@ -695,7 +702,7 @@ body {
 /* Cột ảnh vừa phải */
 .body-content th:nth-child(2),
 .body-content td:nth-child(2) {
-    width: 100px;
+    width: 150px;
 }
 
 /* Header */
@@ -728,7 +735,8 @@ body {
     display: block;
     margin: 0 auto;
 }
-.body-content button {
+.body-content button,
+.body-content tbody tr td button {
     padding: 6px 12px;
     border: none;
     border-radius: 6px;
@@ -740,22 +748,200 @@ body {
 }
 
 /* Nút Xóa: đỏ */
-.body-content button:first-child {
+.body-content .admin-form-loc:first-child {
     background-color: #e74c3c;
 }
 
-.body-content button:first-child:hover {
+.body-content .admin-form-loc:first-child:hover {
     background-color: #c0392b;
 }
 
 /* Nút Sửa: xanh dương */
-.body-content button:last-child {
+.body-content .admin-form-loc:last-child {
+    background-color: #3498db;
+}
+.admin-form-loc a{
+    color: #fff;
+    text-decoration: none;
+}
+
+.body-content .admin-form-loc:last-child:hover {
+    background-color: #2980b9;
+}
+
+
+/*  Cho tất cả các bảng */
+/* Nút Xóa: đỏ */
+.admin-button-table:last-child {
+    background-color: #e74c3c;
+}
+
+.admin-button-table:last-child:hover {
+    background-color: #c0392b;
+}
+
+/* Nút Sửa: xanh dương */
+.admin-button-table:first-child {
+    background-color: #3498db;
+    	margin-bottom: 5px;
+
+}
+
+.admin-button-table:first-child:hover {
+    background-color: #2980b9;
+}
+
+
+
+
+/* body content Admin */
+.body-statistics {
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    margin-top: 30px;
+    overflow-x: auto;
+}
+
+.body-statistics table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.body-statistics th,
+.body-statistics td {
+    padding: 12px 16px;
+    text-align: center;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 18px;
+    vertical-align: middle;
+    word-wrap: break-word;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+.pagination-admin {
+    display: flex;
+    list-style: none;
+    padding-left: 0;
+    justify-content: center;
+    gap: 8px;
+    margin: 20px 0;
+}
+
+.pagination-admin li {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pagination-admin li a,
+.pagination-admin li span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #f8f8f8;
+    text-decoration: none;
+    color: #333;
+    font-weight: normal;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+/* Hover effect */
+.pagination-admin li a:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Active page */
+.pagination-admin li.active span {
+    background: #007bff;
+    color: white;
+    font-weight: bold;
+    border: 1px solid #007bff;
+}
+
+/* Disabled state */
+.pagination-admin li.disabled span {
+    color: #ccc;
+    cursor: not-allowed;
+    background: #f8f8f8;
+    border: 1px solid #ccc;
+}
+
+
+
+/* Header */
+.body-statistics thead {
+    background-color: #f0f2f5;
+}
+
+.body-statistics th {
+    color: #333;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+/* Dòng chẵn có màu xám nhẹ */
+.body-statistics tbody tr:nth-child(even) {
+    background-color: #f5f5f5;
+}
+
+/* Hover */
+.body-statistics tbody tr:hover {
+    background-color: #e6f7ff;
+}
+
+/* Ảnh avatar trong bảng */
+.body-statistics td img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 6px;
+    display: block;
+    margin: 0 auto;
+}
+.body-statistics button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #fff;
+    transition: background-color 0.3s ease;
+    margin: 0 4px;
+}
+
+/* Nút Xóa: đỏ */
+.body-statistics button:first-child {
+    background-color: #e74c3c;
+}
+
+.body-statistics button:first-child:hover {
+    background-color: #c0392b;
+}
+
+/* Nút Sửa: xanh dương */
+.body-statistics button:last-child {
     background-color: #3498db;
 }
 
-.body-content button:last-child:hover {
+.body-statistics button:last-child:hover {
     background-color: #2980b9;
 }
+
+
 
 .form-add {
     background: #fff;
@@ -816,6 +1002,41 @@ body {
     border: 1px solid #ccc;
     box-sizing: border-box;
     font-size: 14px;
+}
+
+.select-status select {
+    padding: 6px 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 120px;
+    text-align: center;
+    font-weight: 700;
+    color: inherit; /* Giữ màu từ class */
+}
+
+/* Hover */
+.select-status select:hover {
+    border-color: #888;
+}
+
+/* Focus */
+.select-status select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.4);
+
+}
+
+/* Class điều chỉnh màu chữ theo trạng thái */
+.select-status select.status-show {
+    color: green;
+}
+.select-status select.status-hide {
+    color: red;
 }
 
 

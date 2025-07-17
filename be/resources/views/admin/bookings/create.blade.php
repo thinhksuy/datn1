@@ -3,31 +3,21 @@
 @section('title', 'Thêm lịch đặt sân')
 
 @section('content')
-<style>
-    .form-container {
-        max-width: 700px;
-        margin: 30px auto;
-        padding: 24px;
-        background: #fff;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-    }
-    .form-group { margin-bottom: 18px; }
-    label { font-weight: 600; display: block; margin-bottom: 6px; }
-    input, select {
-        width: 100%; padding: 10px;
-        border: 1px solid #ccc; border-radius: 4px; font-size: 14px;
-    }
-    .form-error { color: red; font-size: 13px; margin-top: 4px; }
-    .form-actions { text-align: right; }
-    .form-actions button {
-        padding: 10px 20px; background: #2563eb; color: white;
-        border: none; border-radius: 4px; font-weight: bold; cursor: pointer;
-    }
-    .form-actions button:hover { background: #1e40af; }
-</style>
+<div class="head-title">
+        <div class="left">
+            <h1>Thêm lịch dặt sân</h1>
+            <ul class="breadcrumb">
+                <li><a href="#">Quản lí sân</a></li>
+                <li><i class='bx bx-chevron-right'></i></li>
+                <li><a class="active" href="#">Thêm lịch dặt sân</a></li>
+            </ul>
+        </div>
+        <a href="{{ route('admin.bookings.index') }}" class="btn-download">
+            <span class="text">Quay lại</span>
+	</a>
+    </div>
 
-<div class="form-container">
+<div class="form-add">
     <h2>Thêm Lịch Đặt Sân</h2>
 
     @if ($errors->any())

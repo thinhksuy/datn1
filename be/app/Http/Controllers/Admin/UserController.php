@@ -13,7 +13,7 @@ class UserController extends Controller
     // Hiển thị danh sách user
     public function index(Request $request)
 {
-    $query = \App\Models\User::with('role');
+    $query = User::with('role');
 
     if ($request->filled('keyword')) {
         $query->where(function ($q) use ($request) {
@@ -31,7 +31,7 @@ class UserController extends Controller
     }
 
     $users = $query->paginate(10)->appends($request->query());
-    $roles = \App\Models\Role::all();
+    $roles = Role::all();
 
     return view('admin.users.index', compact('users', 'roles'));
 }

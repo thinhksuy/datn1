@@ -1,11 +1,12 @@
 @extends('layouts.layout')
+@section('title', 'Danh sách đơn hàng')
 
 @section('content')
 <div class="head-title">
-    <div class="left">
+	<div class="left">
         <h1>Đơn hàng</h1>
         <ul class="breadcrumb">
-            <li><a href="#">Quản lý</a></li>
+            <li><a href="#">Đơn hàng</a></li>
             <li><i class='bx bx-chevron-right'></i></li>
             <li><a class="active" href="#">Danh sách đơn hàng</a></li>
         </ul>
@@ -48,8 +49,8 @@
         </div>
 
         <div>
-            <button type="submit">Lọc</button>
-            <a href="{{ route('admin.orders.index') }}" style="margin-left: 10px;">Đặt lại</a>
+            <button type="submit" class="admin-form-loc">Lọc</button>
+            <button type="submit" class="admin-form-loc"><a href="{{ route('admin.products.index') }}">Đặt lại</a></button>
         </div>
     </div>
 </form>
@@ -89,26 +90,26 @@
 
                 </td>
                 <td>{{ $order->created_at->format('d/m/Y H:i') }}</td>
-                <td>
-                    <a href="{{ route('admin.orders.show', $order->order_id) }}">Xem</a> |
-<a href="{{ route('admin.orders.edit', $order->order_id) }}">Sửa</a> |
-<form action="{{ route('admin.orders.destroy', $order->order_id) }}" method="POST" style="display:inline;">
-    @csrf
-    @method('DELETE')
-    <button onclick="return confirm('Bạn có chắc chắn muốn xóa đơn hàng này?')" style="color:red; background:none; border:none; cursor:pointer;">
-        Xóa
-    </button>
-</form>
+                <td class="action-buttons">
+                    <!-- Nút Xem -->
+                    <button class="admin-button-table">
+                        <a href="{{ route('admin.orders.show', $order->order_id) }}" style="display:block; width:100%; height:100%; color:inherit; text-decoration:none;">Xem</a>
+                    </button>
 
+                    <!-- Nút Sửa -->
+                    <button class="admin-button-table">
+                        <a href="{{ route('admin.orders.edit', $order->order_id) }}" style="display:block; width:100%; height:100%; color:inherit; text-decoration:none;">Sửa</a>
+                    </button>
                 </td>
+
+
             </tr>
             @endforeach
         </tbody>
     </table>
 
     {{-- Phân trang --}}
-    <div style="margin-top: 20px;">
-        {{ $orders->links('vendor.pagination.custom') }}
-    </div>
+
+    {{ $orders->links() }}
 </div>
 @endsection

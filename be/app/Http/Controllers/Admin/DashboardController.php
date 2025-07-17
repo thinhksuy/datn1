@@ -53,14 +53,64 @@ class DashboardController extends Controller
         $newUsers = 0;
         $newCourtBookings = 0;
 
-        return view('admin.index', compact(
+        // Thống kê khách hàng mới trong tháng hiện tại
+    $newUsers = DB::table('user')
+        ->whereMonth('created_at', $month)
+        ->whereYear('created_at', $year)
+        ->count();
+
+    // Thống kê lịch đặt sân mới trong tháng hiện tại
+    $newCourtBookings = DB::table('court_booking')
+        ->whereMonth('created_at', $month)
+        ->whereYear('created_at', $year)
+        ->count();
+
+    // Thống kê tổng số đơn hàng
+    $totalOrders = DB::table('orders')->count();
+
+    // Thống kê tổng số khách hàng
+    $totalUsers = DB::table('user')->count();
+
+    // Tổng số doanh thu
+    $totalRevenue = DB::table('orders')
+        ->where('status', 'completed')
+        ->sum('total_amount');
+
+    // Tổng số lượt đặt sân
+    $totalCourtBookings = DB::table('court_booking')->count();
+
+    // Đơn hàng gần đây (5 đơn mới nhất)
+    $recentOrders = DB::table('orders')
+        ->join('user', 'orders.user_id', '=', 'user.id')
+        ->select('orders.*', 'user.name as user_name')
+        ->orderByDesc('orders.created_at')
+        ->limit(5)
+        ->get();
+
+    // Lịch đặt sân gần đây (5 lịch mới nhất)
+    $recentBookings = DB::table('court_booking')
+        ->join('user', 'court_booking.user_id', '=', 'user.id')
+        ->select('court_booking.*', 'user.name as user_name')
+        ->orderByDesc('court_booking.created_at')
+        ->limit(5)
+        ->get();
+
+
+            return view('admin.index', compact(
             'labels',
             'totalAmount',
             'orderCounts',
             'orderThisMonth',
             'revenueThisMonth',
             'newUsers',
-            'newCourtBookings'
+            'newCourtBookings',
+            'totalOrders',
+            'totalUsers',
+            'totalRevenue',
+            'totalCourtBookings',
+            'recentOrders',
+            'recentBookings'
         ));
+
     }
 }

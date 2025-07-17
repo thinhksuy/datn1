@@ -12,7 +12,7 @@ class CourtController extends Controller
     // Hiển thị danh sách sân
     public function index()
     {
-        $courts = Court::latest()->get();
+        $courts = Court::latest()->paginate(10);
         return view('admin.courts.index', compact('courts'));
     }
 

@@ -3,60 +3,21 @@
 @section('title', 'Sửa lịch đặt sân')
 
 @section('content')
-<style>
-    .form-container {
-        max-width: 700px;
-        margin: 30px auto;
-        padding: 24px;
-        background: #fff;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-    }
+<div class="head-title">
+        <div class="left">
+            <h1>Chỉnh sửa lịch dặt sân</h1>
+            <ul class="breadcrumb">
+                <li><a href="#">Quản lí sân</a></li>
+                <li><i class='bx bx-chevron-right'></i></li>
+                <li><a class="active" href="#">Chỉnh sửa lịch dặt sân</a></li>
+            </ul>
+        </div>
+        <a href="{{ route('admin.bookings.index') }}" class="btn-download">
+            <span class="text">Quay lại</span>
+	</a>
+    </div>
 
-    .form-group {
-        margin-bottom: 18px;
-    }
-
-    label {
-        font-weight: 600;
-        display: block;
-        margin-bottom: 6px;
-    }
-
-    input, select {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 14px;
-    }
-
-    .form-actions {
-        text-align: right;
-    }
-
-    .form-actions button {
-        padding: 10px 20px;
-        background: #2563eb;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    .form-actions button:hover {
-        background: #1e40af;
-    }
-
-    .form-error {
-        color: red;
-        font-size: 13px;
-        margin-top: 4px;
-    }
-</style>
-
-<div class="form-container">
+<div class="form-add">
     <h2>Sửa Lịch Đặt Sân</h2>
 
     @if ($errors->any())
@@ -115,14 +76,14 @@
 
         <div class="form-group">
             <label for="start_time">Giờ bắt đầu</label>
-            <input type="time" name="start_time" id="start_time" 
+            <input type="time" name="start_time" id="start_time"
        value="{{ old('start_time', \Carbon\Carbon::parse($booking->Start_time)->format('H:i')) }}" required>
             @error('start_time') <div class="form-error">{{ $message }}</div> @enderror
         </div>
 
         <div class="form-group">
             <label for="end_time">Giờ kết thúc</label>
-            <input type="time" name="end_time" id="end_time" 
+            <input type="time" name="end_time" id="end_time"
        value="{{ old('end_time', \Carbon\Carbon::parse($booking->End_time)->format('H:i')) }}" required>
             @error('end_time') <div class="form-error">{{ $message }}</div> @enderror
         </div>

@@ -3,16 +3,19 @@
 @section('content')
 <div class="head-title">
     <div class="left">
-        <h1>Cập nhật tài khoản</h1>
+        <h1>Chỉnh sửa tài khoản</h1>
         <ul class="breadcrumb">
             <li><a href="#">Tài khoản</a></li>
             <li><i class='bx bx-chevron-right'></i></li>
-            <li><a class="active" href="#">Cập nhật tài khoản</a></li>
+            <li><a class="active" href="#">Chỉnh sửa tài khoản</a></li>
         </ul>
     </div>
+    <a href="{{ route('admin.users.index') }}" class="btn-download">
+            <span class="text">Quay lại</span>
+        </a>
 </div>
 
-<div class="form-edit">
+<div class="form-add">
     <h2>Chỉnh sửa Người Dùng</h2>
 
     @if ($errors->any())

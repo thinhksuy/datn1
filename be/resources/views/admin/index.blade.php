@@ -36,11 +36,11 @@
         <i class='bx bxs-dollar-circle'></i>
         <span class="text">
             <h3>{{ number_format($revenueThisMonth, 0, ',', '.') }}đ</h3>
-            <p>Tổng doanh thu tháng</p>
+            <p>Tổng tiền tháng</p>
         </span>
     </li>
     <li>
-        <i class='bx bxs-calendar'></i>
+        <i class='bx bxs-calendar-check'></i>
         <span class="text">
             <h3>{{ $newCourtBookings }}</h3>
             <p>Lịch đặt sân mới</p>
@@ -48,6 +48,82 @@
     </li>
 </ul>
 
+
+<div class="table-data">
+				<div class="order">
+					<div class="head">
+						<h3>Đơn hàng gần đây</h3>
+					</div>
+					<table>
+						<thead>
+							<tr>
+								<th>Khác Hàng</th>
+								<th>Ngày Đặt</th>
+								<th>Tổng Tiền</th>
+								<th>Trạng Thái</th>
+							</tr>
+						</thead>
+						<tbody>
+                            @foreach($recentOrders as $order)
+                            <tr>
+                                <td>
+                                    <img src="{{ asset('img/people.png') }}">
+                                    <p>{{ $order->user_name }}</p>
+                                </td>
+                                <td>{{ \Carbon\Carbon::parse($order->created_at)->format('d-m-Y') }}</td>
+                                <td>{{ number_format($order->total_amount, 0, ',', '.') }}đ</td>
+                                <td>
+                                    @php
+                                        $statusClass = match($order->status) {
+                                            'completed' => 'completed',
+                                            'cancelled' => 'cancel',
+                                            'processing' => 'process',
+                                            default => 'pending',
+                                        };
+                                    @endphp
+                                    <span class="status {{ $statusClass }}">
+                                        {{ ucfirst(__($order->status)) }}
+                                    </span>
+                                </td>
+                            </tr>
+                            @endforeach
+                            </tbody>
+
+					</table>
+				</div>
+				<div class="order">
+					<div class="head">
+						<h3>Lịch đặt sân gần đây</h3>
+					</div>
+					<table>
+						<thead>
+							<tr>
+								<th>Khác Hàng</th>
+								<th>Ngày Đặt</th>
+								<th>Giờ bắt</th>
+								<th>Giờ kết thúc</th>
+								<th>Tổng Tiền</th>
+							</tr>
+						</thead>
+						<tbody>
+                            @foreach($recentBookings as $booking)
+                            <tr>
+                                <td>
+                                    <img src="{{ asset('img/people.png') }}">
+                                    <p>{{ $booking->user_name }}</p>
+                                </td>
+                                <td>{{ \Carbon\Carbon::parse($booking->created_at)->format('d-m-Y') }}</td>
+                                <td>{{ $booking->Start_time }}</td>
+                                <td>{{ $booking->End_time }}</td>
+                                <td>{{ number_format($booking->Total_price, 0, ',', '.') }}đ</td>
+                            </tr>
+                            @endforeach
+                            </tbody>
+
+					</table>
+				</div>
+
+			</div>
 
 {{-- Biểu đồ thống kê --}}
 <h3 class="thongke left mt-5">📊 Thống Kê Doanh Thu & Đơn Hàng Theo Tháng</h3>

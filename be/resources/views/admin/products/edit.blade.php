@@ -14,12 +14,15 @@
             <li><a class="active" href="#">Sửa sản phẩm</a></li>
         </ul>
     </div>
+    <a href="{{ route('admin.products.index') }}" class="btn-download">
+		<span class="text">Quay lại</span>
+	</a>
 </div>
 
 <!-- =========================
      Form cập nhật sản phẩm
 ============================ -->
-<div class="form-edit">
+<div class="form-add">
     <h2>Cập nhật Sản phẩm</h2>
 
     <form action="{{ route('admin.products.update', $product->Product_ID) }}" method="POST" enctype="multipart/form-data">

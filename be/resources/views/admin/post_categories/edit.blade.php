@@ -3,9 +3,20 @@
 @section('content')
 <main>
 <div class="head-title">
-        <h1>Sửa Voucher</h1>
+    <div class="left">
+        <h1>Sửa danh mục bài viết</h1>
+        <ul class="breadcrumb">
+            <li><a href="#">Danh mục bài viết</a></li>
+            <li><i class='bx bx-chevron-right'></i></li>
+            <li><a class="active" href="#">Sửa danh mục bài viết</a></li>
+        </ul>
     </div>
-<div class="form-edit">
+     <a href="{{ route('admin.post_categories.index') }}" class="btn-download">
+		<span class="text">Quay lại</span>
+	</a>
+</div>
+
+<div class="form-add">
     <h2>Cập nhật Danh Mục</h2>
     <form action="{{ route('admin.post_categories.update', $category->Post_Categories_ID) }}" method="POST">
         @csrf

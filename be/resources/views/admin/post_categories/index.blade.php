@@ -11,10 +11,9 @@
                 <li><a class="active" href="#">Danh sách danh mục</a></li>
             </ul>
         </div>
-        <a href="#" class="btn-download">
-            <i class='bx bxs-cloud-download'></i>
-            <span class="text">Download PDF</span>
-        </a>
+        <a href="{{ route('admin.post_categories.create') }}" class="btn-download">
+		<span class="text">+ Thêm danh mục mới</span>
+	</a>
     </div>
 
     <div class="body-content">
@@ -49,13 +48,19 @@
                     <td>{{ $category->View }}</td>
                     <td>{{ \Carbon\Carbon::parse($category->Created_at)->format('d-m-Y') }}</td>
                     <td class="action-buttons">
-                        <a href="{{ route('admin.post_categories.edit', $category->Post_Categories_ID) }}" class="btn-edit">Sửa</a>
+                        <!-- Nút Sửa -->
+                        <button class="admin-button-table">
+                            <a href="{{ route('admin.post_categories.edit', $category->Post_Categories_ID) }}" style="display: block; width: 100%; height: 100%; color: inherit; text-decoration: none;">Sửa</a>
+                        </button>
+
+                        <!-- Nút Xoá -->
                         <form action="{{ route('admin.post_categories.destroy', $category->Post_Categories_ID) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn-delete" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xoá</button>
+                            <button type="submit" class="admin-button-table btn-delete" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xoá</button>
                         </form>
                     </td>
+
                 </tr>
                 @endforeach
 
@@ -66,6 +71,7 @@
                 @endif
             </tbody>
         </table>
+        {{ $categories->links() }}
     </div>
 </main>
 @endsection

@@ -218,5 +218,5 @@ class ProductController extends Controller
         return redirect()->route('admin.products.index')->with('success', 'Xóa sản phẩm thành công!');
     }
 
-    
+
 }

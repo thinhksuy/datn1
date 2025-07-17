@@ -3,142 +3,26 @@
 @section('title', 'Quản lý sân cầu lông')
 
 @section('content')
-<style>
-    .container {
-        max-width: 1200px;
-        margin: 40px auto;
-        padding: 0 16px;
-    }
+<div class="head-title">
+				<div class="left">
+					<h1>Danh sách sân</h1>
+					<ul class="breadcrumb">
+						<li>
+							<a href="#">Quản lí sân</a>
+						</li>
+						<li><i class='bx bx-chevron-right' ></i></li>
+						<li>
+							<a class="active" href="#">Danh sách  sân</a>
+						</li>
+					</ul>
+				</div>
+				<a href="{{ route('admin.courts.create') }}" class="btn-download">
+                    <span class="text">+ Thêm sân mới</span>
+                </a>
+			</div>
 
-    .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 24px;
-    }
-
-    .header h1 {
-        font-size: 24px;
-        font-weight: bold;
-        color: #2d3748;
-    }
-
-    .btn-add {
-        background-color: #2563eb;
-        color: white;
-        padding: 10px 16px;
-        border-radius: 6px;
-        text-decoration: none;
-        font-weight: 500;
-        transition: background-color 0.3s ease;
-    }
-
-    .btn-add:hover {
-        background-color: #1d4ed8;
-    }
-
-    .table-container {
-        background-color: white;
-        border: 1px solid #e5e7eb;
-        border-radius: 8px;
-        overflow-x: auto;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 14px;
-    }
-
-    thead {
-        background-color: #f3f4f6;
-        text-transform: uppercase;
-        font-size: 12px;
-        color: #4b5563;
-    }
-
-    th, td {
-        padding: 12px;
-        text-align: left;
-        border-bottom: 1px solid #e5e7eb;
-        vertical-align: middle;
-    }
-
-    tbody tr:hover {
-        background-color: #f9fafb;
-    }
-
-    .image-thumb {
-        width: 100px;
-        height: 70px;
-        object-fit: cover;
-        border-radius: 4px;
-        border: 1px solid #ddd;
-    }
-
-    .status-active {
-        background-color: #d1fae5;
-        color: #065f46;
-        font-size: 12px;
-        padding: 4px 8px;
-        border-radius: 9999px;
-        display: inline-block;
-    }
-
-    .status-inactive {
-        background-color: #fee2e2;
-        color: #991b1b;
-        font-size: 12px;
-        padding: 4px 8px;
-        border-radius: 9999px;
-        display: inline-block;
-    }
-
-    .action-links a {
-        margin-right: 8px;
-        color: #2563eb;
-        text-decoration: none;
-    }
-
-    .action-links a:hover {
-        text-decoration: underline;
-    }
-
-    .action-links form {
-        display: inline-block;
-    }
-
-    .action-links button {
-        background: none;
-        border: none;
-        color: #dc2626;
-        cursor: pointer;
-    }
-
-    .action-links button:hover {
-        text-decoration: underline;
-    }
-
-    .text-center {
-        text-align: center;
-    }
-
-    .text-right {
-        text-align: right;
-    }
-
-    .text-muted {
-        color: #6b7280;
-    }
-</style>
-
-<div class="container">
-    <div class="header">
-        <h1>Danh sách sân cầu lông</h1>
-        <a href="{{ route('admin.courts.create') }}" class="btn-add">+ Thêm sân mới</a>
-    </div>
-
-    <div class="table-container">
+<div class="body-content">
+    <div>
         <table>
             <thead>
                 <tr>
@@ -171,14 +55,20 @@
                                 <span class="status-inactive">Tạm ngưng</span>
                             @endif
                         </td>
-                        <td class="text-center action-links">
-                            <a href="{{ route('admin.courts.edit', $court->Courts_ID) }}">Sửa</a>
-                            <form action="{{ route('admin.courts.destroy', $court->Courts_ID) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa sân này?')">
+                        <td class="action-buttons text-center">
+                            <!-- Nút Sửa -->
+                            <button class="admin-button-table">
+                                <a href="{{ route('admin.courts.edit', $court->Courts_ID) }}" style="display:block; width:100%; height:100%; color:inherit; text-decoration:none;">Sửa</a>
+                            </button>
+
+                            <!-- Nút Xoá -->
+                            <form action="{{ route('admin.courts.destroy', $court->Courts_ID) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit">Xóa</button>
+                                <button type="submit" class="admin-button-table btn-delete" onclick="return confirm('Bạn có chắc chắn muốn xóa sân này?')">Xoá</button>
                             </form>
                         </td>
+
                     </tr>
                 @empty
                     <tr>
@@ -187,6 +77,7 @@
                 @endforelse
             </tbody>
         </table>
+        {{ $courts->links() }}
     </div>
 </div>
 @endsection

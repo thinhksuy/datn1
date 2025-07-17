@@ -3,106 +3,21 @@
 @section('title', 'Chỉnh sửa sân cầu lông')
 
 @section('content')
-<style>
-    .container {
-        max-width: 700px;
-        margin: 40px auto;
-        padding: 0 16px;
-    }
 
-    h1 {
-        font-size: 24px;
-        font-weight: bold;
-        margin-bottom: 24px;
-        color: #2d3748;
-    }
-
-    form {
-        background-color: #ffffff;
-        padding: 24px;
-        border-radius: 8px;
-        border: 1px solid #e2e8f0;
-    }
-
-    label {
-        display: block;
-        margin-bottom: 6px;
-        font-weight: 500;
-    }
-
-    input[type="text"],
-    input[type="number"],
-    textarea,
-    select {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #cbd5e0;
-        border-radius: 4px;
-        margin-bottom: 16px;
-        font-size: 14px;
-    }
-
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-    .form-check {
-        display: flex;
-        align-items: center;
-        margin-bottom: 20px;
-    }
-
-    .form-check input {
-        margin-right: 8px;
-    }
-
-    .form-actions {
-        display: flex;
-        justify-content: flex-end;
-        gap: 10px;
-    }
-
-    .btn {
-        padding: 10px 16px;
-        border-radius: 4px;
-        border: none;
-        cursor: pointer;
-        font-weight: bold;
-    }
-
-    .btn-save {
-        background-color: #2563eb;
-        color: white;
-    }
-
-    .btn-save:hover {
-        background-color: #1d4ed8;
-    }
-
-    .btn-cancel {
-        background-color: #e5e7eb;
-        color: #374151;
-        text-decoration: none;
-        display: inline-block;
-        padding: 10px 16px;
-        border-radius: 4px;
-    }
-
-    .btn-cancel:hover {
-        background-color: #d1d5db;
-    }
-
-    .image-preview {
-        width: 150px;
-        height: 100px;
-        object-fit: cover;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        margin-top: 8px;
-    }
-</style>
-
-<div class="container">
+<div class="head-title">
+        <div class="left">
+            <h1>Chỉnh sửa sân</h1>
+            <ul class="breadcrumb">
+                <li><a href="#">Quản lí sân</a></li>
+                <li><i class='bx bx-chevron-right'></i></li>
+                <li><a class="active" href="#">Chỉnh sửa sân</a></li>
+            </ul>
+        </div>
+        <a href="{{ route('admin.courts.index') }}" class="btn-download">
+            <span class="text">Quay lại</span>
+	</a>
+    </div>
+<div class="form-add">
     <h1>Chỉnh sửa sân: {{ $court->Name }}</h1>
 
     <form action="{{ route('admin.courts.update', $court->Courts_ID) }}" method="POST" enctype="multipart/form-data">
@@ -148,7 +63,6 @@
         </div>
 
         <div class="form-actions">
-            <a href="{{ route('admin.courts.index') }}" class="btn btn-cancel">Hủy</a>
             <button type="submit" class="btn btn-save">Lưu thay đổi</button>
         </div>
     </form>

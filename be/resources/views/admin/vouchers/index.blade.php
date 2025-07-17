@@ -1,6 +1,20 @@
 @extends('layouts.layout')
 
 @section('content')
+<div class="head-title">
+    <div class="left">
+        <h1>Voucher</h1>
+        <ul class="breadcrumb">
+            <li><a href="#">Voucher</a></li>
+            <li><i class='bx bx-chevron-right'></i></li>
+            <li><a class="active" href="#">Danh sách voucher</a></li>
+        </ul>
+    </div>
+    <a href="{{ route('admin.vouchers.create') }}" class="btn-download">
+        <span class="text">+ Thêm voucher mới</span>
+    </a>
+</div>
+
 <div class="body-content">
     <h1>Quản lý Voucher</h1>
     @if (session('success'))
@@ -48,13 +62,19 @@
             <td>{{ $voucher->Expires ?? 'Không có' }}</td>
             <td>{{ $voucher->applies_to ?? 'Không rõ' }}</td>
             <td class="action-buttons">
-                <a href="{{ route('admin.vouchers.edit', $voucher->Vouchers_ID) }}" class="btn-edit">Sửa</a>
+                <!-- Nút Sửa -->
+                <button class="admin-button-table">
+                    <a href="{{ route('admin.vouchers.edit', $voucher->Vouchers_ID) }}" class="btn-edit" style="display: block; width: 100%; height: 100%; color: inherit; text-decoration: none;">Sửa</a>
+                </button>
+
+                <!-- Nút Xoá giống y hệt nút Sửa -->
                 <form action="{{ route('admin.vouchers.destroy', $voucher->Vouchers_ID) }}" method="POST" style="display:inline;">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn-delete" onclick="return confirm('Bạn có chắc muốn xoá?')">Xoá</button>
+                    <button type="submit" class="admin-button-table btn-delete" onclick="return confirm('Bạn có chắc muốn xoá?')">Xoá</button>
                 </form>
             </td>
+
         </tr>
     @empty
         <tr>
@@ -69,5 +89,7 @@
     </div>
 
     </table>
+    {{ $vouchers->links() }}
+
 </div>
 @endsection

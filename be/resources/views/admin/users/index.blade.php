@@ -10,9 +10,8 @@
             <li><a class="active" href="#">Danh sách tài khoản</a></li>
         </ul>
     </div>
-    <a href="#" class="btn-download">
-        <i class='bx bxs-cloud-download'></i>
-        <span class="text">Download PDF</span>
+    <a href="{{ route('admin.users.create') }}" class="btn-download">
+        <span class="text">+ Thêm tài khoản mới</span>
     </a>
 </div>
 
@@ -78,16 +77,20 @@
                     <td>{{ $user->Email }}</td>
                     <td>{{ $user->Phone }}</td>
                     <td>{{ $user->role->Name ?? 'Không rõ' }}</td>
-                    <td>
-                        <form action="{{ route('admin.users.destroy', $user->ID) }}" method="POST" style="display:inline-block;">
+                    <td class="action-buttons">
+                        <!-- Nút Sửa -->
+                        <button class="admin-button-table">
+                            <a href="{{ route('admin.users.edit', $user->ID) }}" style="display:block; width:100%; height:100%; color:inherit; text-decoration:none;">Sửa</a>
+                        </button>
+
+                        <!-- Nút Xoá -->
+                        <form action="{{ route('admin.users.destroy', $user->ID) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" onclick="return confirm('Bạn chắc chắn muốn xóa?')">Xóa</button>
+                            <button type="submit" class="admin-button-table btn-delete" onclick="return confirm('Bạn chắc chắn muốn xóa?')">Xoá</button>
                         </form>
-                        <a href="{{ route('admin.users.edit', $user->ID) }}">
-                            <button>Sửa</button>
-                        </a>
                     </td>
+
                 </tr>
             @endforeach
         </tbody>
@@ -96,5 +99,6 @@
     <div style="margin-top: 20px">
         {{ $users->appends(request()->query())->links() }}
     </div>
+    {{ $users->links() }}
 </div>
 @endsection

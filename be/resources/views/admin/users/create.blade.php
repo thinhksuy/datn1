@@ -10,6 +10,9 @@
             <li><a class="active" href="#">Thêm tài khoản</a></li>
         </ul>
     </div>
+    <a href="{{ route('admin.users.index') }}" class="btn-download">
+            <span class="text">Quay lại</span>
+        </a>
 </div>
 
 <div class="form-add">
