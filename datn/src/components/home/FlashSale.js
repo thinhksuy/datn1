@@ -11,44 +11,48 @@ const FlashSale = ({
   priceOld,
   discount,
   stars = "★★★★★",
-  endTime,
 }) => {
+  // ⏱️ Thời gian đếm ngược ảo khởi tạo: 5 giờ 
   const [timeLeft, setTimeLeft] = useState({
-    hours: "00",
-    minutes: "00",
-    seconds: "00",
+    hours: 5,
+    minutes: 0,
+    seconds: 0,
   });
+
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.33 });
 
   useEffect(() => {
-    const updateCountdown = () => {
-      const now = new Date().getTime();
-      const distance = new Date(endTime).getTime() - now;
+    const interval = setInterval(() => {
+      setTimeLeft((prev) => {
+        let { hours, minutes, seconds } = prev;
 
-      if (distance <= 0) {
-        setTimeLeft({ hours: "00", minutes: "00", seconds: "00" });
-        return;
-      }
+        if (hours === 0 && minutes === 0 && seconds === 0) {
+          clearInterval(interval);
+          return { hours: 0, minutes: 0, seconds: 0 };
+        }
 
-      const hours = String(
-        Math.floor((distance / (1000 * 60 * 60)) % 24)
-      ).padStart(2, "0");
-      const minutes = String(
-        Math.floor((distance / (1000 * 60)) % 60)
-      ).padStart(2, "0");
-      const seconds = String(Math.floor((distance / 1000) % 60)).padStart(
-        2,
-        "0"
-      );
+        if (seconds > 0) {
+          seconds--;
+        } else {
+          if (minutes > 0) {
+            minutes--;
+            seconds = 59;
+          } else if (hours > 0) {
+            hours--;
+            minutes = 59;
+            seconds = 59;
+          }
+        }
 
-      setTimeLeft({ hours, minutes, seconds });
-    };
-
-    const interval = setInterval(updateCountdown, 1000);
-    updateCountdown();
+        return { hours, minutes, seconds };
+      });
+    }, 1000);
 
     return () => clearInterval(interval);
-  }, [endTime]);
+  }, []);
+
+  // Format giờ sang 2 chữ số
+  const format = (num) => String(num).padStart(2, "0");
 
   return (
     <motion.div
@@ -115,9 +119,9 @@ const FlashSale = ({
             animate={inView ? { opacity: 1, scale: 1 } : {}}
             transition={{ delay: 0.7, duration: 0.4 }}
           >
-            <div className="time-box">{timeLeft.hours}</div>:
-            <div className="time-box">{timeLeft.minutes}</div>:
-            <div className="time-box">{timeLeft.seconds}</div>
+            <div className="time-box">{format(timeLeft.hours)}</div>:
+            <div className="time-box">{format(timeLeft.minutes)}</div>:
+            <div className="time-box">{format(timeLeft.seconds)}</div>
           </motion.div>
         </motion.div>
       </div>
