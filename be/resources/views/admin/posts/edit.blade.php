@@ -13,7 +13,7 @@
     </div>
 @endif
 
-<form action="{{ route('admin.posts.update', $post->id) }}" method="POST">
+<form action="{{ route('admin.posts.update', $post->Post_ID) }}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PUT')
 
@@ -21,7 +21,7 @@
         <label for="User_ID">Người đăng</label>
         <select name="User_ID" id="User_ID" class="form-control" required>
             @foreach($users as $user)
-                <option value="{{ $user->ID }}" {{ $user->ID == $post->User_ID ? 'selected' : '' }}>{{ $user->name }}</option>
+                <option value="{{ $user->ID }}" {{ $user->ID == $post->User_ID ? 'selected' : '' }}>{{ $user->Name }}</option>
             @endforeach
         </select>
     </div>
@@ -29,8 +29,9 @@
     <div class="form-group">
         <label for="Category_ID">Danh mục</label>
         <select name="Category_ID" id="Category_ID" class="form-control" required>
+            <option value="" disabled>Chọn danh mục</option>
             @foreach($categories as $category)
-                <option value="{{ $category->Post_Categories_ID }}" {{ $category->Post_Categories_ID == $post->Category_ID ? 'selected' : '' }}>{{ $category->Name }}</option>
+                <option value="{{ $category->Post_Categories_ID }}" {{ $category->Post_Categories_ID == $post->Category_ID ? 'selected' : '' }}>{{ $category->Title }}</option>
             @endforeach
         </select>
     </div>
@@ -42,7 +43,7 @@
 
     <div class="form-group">
         <label for="Thumbnail">Ảnh đại diện</label>
-        <input type="text" name="Thumbnail" id="Thumbnail" class="form-control" value="{{ $post->Thumbnail }}">
+        <input type="file" name="Thumbnail" id="Thumbnail" class="form-control">
     </div>
 
     <div class="form-group">
@@ -60,10 +61,7 @@
         <input type="checkbox" name="Status" id="Status" value="1" {{ $post->Status ? 'checked' : '' }}>
     </div>
 
-    <div class="form-group">
-        <label for="View">Lượt xem</label>
-        <input type="number" name="View" id="View" class="form-control" value="{{ $post->View }}">
-    </div>
+    <!-- Removed View input field to prevent admin editing view count -->
 
     <button type="submit" class="btn btn-primary">Cập nhật</button>
 </form>

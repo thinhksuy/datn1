@@ -13,16 +13,14 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::with('user', 'category')->get();
-        return view('posts.index', compact('posts'));
+        return view('admin.posts.index', compact('posts'));
     }
 
     public function create()
     {
-        $users = User::whereHas('role', function($q) {
-            $q->where('name', 'admin');
-        })->get();
+        $users = User::whereIn('Role_ID', [1, 2])->get();
         $categories = PostCategory::all();
-        return view('posts.create', compact('users', 'categories'));
+        return view('admin.posts.create', compact('users', 'categories'));
     }
 
     public function store(Request $request)
@@ -31,31 +29,34 @@ class PostController extends Controller
             'User_ID' => 'required|exists:user,ID',
             'Category_ID' => 'required|exists:post_categories,Post_Categories_ID',
             'Title' => 'required|string|max:255',
-            'Thumbnail' => 'nullable|string',
+            'Thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'Content' => 'required',
             'Excerpt' => 'nullable|string',
             'Status' => 'boolean',
             'View' => 'nullable|integer',
         ]);
 
+        if ($request->hasFile('Thumbnail')) {
+            $imagePath = $request->file('Thumbnail')->store('uploads/admin/posts', 'public');
+            $validated['Thumbnail'] = '/storage/' . $imagePath;
+        }
+
         Post::create($validated);
-        return redirect()->route('posts.index')->with('success', '  Post created successfully.');
+        return redirect()->route('admin.posts.index')->with('success', 'Post created successfully.');
     }
 
     public function show($id)
     {
         $post = Post::with('user', 'category')->findOrFail($id);
-        return view('posts.show', compact('post'));
+        return view('admin.posts.show', compact('post'));
     }
 
     public function edit($id)
     {
         $post = Post::findOrFail($id);
-        $users = User::whereHas('role', function($q) {
-            $q->where('name', 'admin');
-        })->get();
+        $users = User::whereIn('Role_ID', [1, 2])->get();
         $categories = PostCategory::all();
-        return view('posts.edit', compact('post', 'users', 'categories'));
+        return view('admin.posts.edit', compact('post', 'users', 'categories'));
     }
 
     public function update(Request $request, $id)
@@ -66,23 +67,28 @@ class PostController extends Controller
             'User_ID' => 'required|exists:user,ID',
             'Category_ID' => 'required|exists:post_categories,Post_Categories_ID',
             'Title' => 'required|string|max:255',
-            'Thumbnail' => 'nullable|string',
+            'Thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'Content' => 'required',
             'Excerpt' => 'nullable|string',
             'Status' => 'boolean',
             'View' => 'nullable|integer',
         ]);
 
+        if ($request->hasFile('Thumbnail')) {
+            $imagePath = $request->file('Thumbnail')->store('uploads/admin/posts', 'public');
+            $validated['Thumbnail'] = '/storage/' . $imagePath;
+        }
+
         $validated['Updated_at'] = now();
 
         $post->update($validated);
-        return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
+        return redirect()->route('admin.posts.index')->with('success', 'Post updated successfully.');
     }
 
     public function destroy($id)
     {
         $post = Post::findOrFail($id);
         $post->delete();
-        return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
+        return redirect()->route('admin.posts.index')->with('success', 'Post deleted successfully.');
     }
 }

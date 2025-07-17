@@ -10,6 +10,7 @@
 
 	<!-- My CSS -->
 	<link rel="stylesheet" href="{{ asset('WebAdmin/style.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/custom-table.css') }}">
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
