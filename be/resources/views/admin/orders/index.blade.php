@@ -2,6 +2,41 @@
 @section('title', 'Danh sách đơn hàng')
 
 @section('content')
+<style>
+form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+form label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: #333;
+}
+
+form input[type="text"],
+form input[type="date"],
+form select {
+    width: 180px;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: #fff;
+    transition: border 0.2s;
+}
+
+form input[type="text"]:focus,
+form input[type="date"]:focus,
+form select:focus {
+    border-color: #3b82f6;
+    outline: none;
+}
+
+</style>
 <div class="head-title">
 	<div class="left">
         <h1>Đơn hàng</h1>

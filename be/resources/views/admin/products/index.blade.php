@@ -1,6 +1,51 @@
 @extends('layouts.layout')
 
 @section('content')
+
+<style>
+    /* Phần form lọc tổng thể */
+.filter-form {
+    background-color: #fdfdfd;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    font-size: 14px;
+}
+
+/* Container sử dụng flex (nên để class riêng thay vì inline style) */
+.filter-form > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: flex-end;
+}
+
+/* Nhóm label + input/select */
+.filter-form div > label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.filter-form input[type="text"],
+.filter-form input[type="number"],
+.filter-form select {
+    width: 250px;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fff;
+    transition: border-color 0.3s;
+}
+
+.filter-form input:focus,
+.filter-form select:focus {
+    border-color: #3b82f6;
+    outline: none;
+}
+
+</style>
 <!-- =========================
      Tiêu đề và breadcrumb
 ============================ -->
