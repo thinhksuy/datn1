@@ -65,8 +65,19 @@ Route::Resource('courts', CourtApi::class);
 
 use App\Http\Controllers\Api\CourtBookingApi;
 
-Route::apiResource('court_bookings', CourtBookingApi::class);
+Route::Resource('court_bookings', CourtBookingApi::class);
 
 use App\Http\Controllers\Api\CartApi;
 
-Route::apiResource('carts', CartApi::class);
+Route::Resource('carts', CartApi::class);
+
+use App\Http\Controllers\Api\OrderDetailApi;
+Route::Resource('order_details', OrderDetailApi::class);
+
+use App\Http\Controllers\Api\OrderApi;
+
+Route::apiResource('orders', OrderApi::class);
+
+use App\Http\Controllers\Api\RolesApiController;
+
+Route::apiResource('roles', RolesApiController::class);
