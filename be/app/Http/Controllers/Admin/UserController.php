@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Role;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -45,28 +46,39 @@ class UserController extends Controller
 
     // Lưu user mới vào DB
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'Name'          => 'required|string|max:255',
-            'Email'         => 'required|email|unique:user,Email',
-            'Password'      => 'required|string|min:6|confirmed',
-            'Phone'         => 'nullable|string|max:20',
-            'Gender'        => 'nullable|in:male,female,other',
-            'Date_of_birth' => 'nullable|date',
-            'Status'        => 'nullable|boolean',
-            'Address'       => 'nullable|string|max:500',
-            'Role_ID'       => 'required|exists:roles,Role_ID',
-        ]);
+{
+    $validated = $request->validate([
+        'Name'          => 'required|string|max:255',
+        'Email'         => 'required|email|unique:user,Email',
+        'Password'      => 'required|string|min:6|confirmed',
+        'Phone'         => 'nullable|string|max:20',
+        'Gender'        => 'nullable|in:male,female,other',
+        'Date_of_birth' => 'nullable|date',
+        'Status'        => 'nullable|boolean',
+        'Address'       => 'nullable|string|max:500',
+        'Role_ID'       => 'required|exists:roles,Role_ID',
+        'Avatar'        => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // validate ảnh
+    ]);
 
-        $user = new User();
-        $user->fill($validated);
-        $user->Password = bcrypt($validated['Password']);
-        $user->Status = $request->Status ?? 0;
-        $user->Created_at = now();
-        $user->save();
+    $user = new User();
+    $user->fill($validated);
+    $user->Password = bcrypt($validated['Password']);
+    $user->Status = $request->Status ?? 0;
 
-        return redirect()->route('admin.users.index')->with('success', 'Tạo user thành công!');
+    // Xử lý ảnh upload
+    if ($request->hasFile('Avatar')) {
+        $file = $request->file('Avatar');
+        $filename = time() . '_' . $file->getClientOriginalName();
+        $file->move(public_path('uploads'), $filename);
+        $user->Avatar = $filename;
     }
+
+    $user->Created_at = now();
+    $user->save();
+
+    return redirect()->route('admin.users.index')->with('success', 'Tạo user thành công!');
+}
+
 
     // ========================
     // Hiển thị form chỉnh sửa

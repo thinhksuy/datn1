@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\ProductAttributeApiController;
 use App\Http\Controllers\Api\ProductValueApiController;
 use App\Http\Controllers\Api\UserApiController;
 
+
 Route::get('/products', [ProductApiController::class, 'index']);
 Route::get('/products/{id}', [ProductApiController::class, 'show']);
 
@@ -49,8 +50,19 @@ Route::Resource('post_categories', PostCategoryApiController::class);
 use App\Http\Controllers\Api\PostApiController;
 Route::Resource('posts', PostApiController::class);
 
-use App\Http\Controllers\Api\CommentApiController;
-Route::Resource('comments', CommentApiController::class);
+// use App\Http\Controllers\Api\CommentApiController;
+// Route::Resource('comments', CommentApiController::class);
 
 use App\Http\Controllers\Api\ProductReviewApiController;
 Route::Resource('product_reviews', ProductReviewApiController::class);
+
+use App\Http\Controllers\Api\PostCommentApi;
+Route::Resource('comments', PostCommentApi::class);
+
+use App\Http\Controllers\Api\CourtApi;
+
+Route::Resource('courts', CourtApi::class);
+
+use App\Http\Controllers\Api\CourtBookingApi;
+
+Route::apiResource('court_bookings', CourtBookingApi::class);

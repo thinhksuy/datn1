@@ -72,7 +72,13 @@
             @foreach ($users as $index => $user)
                 <tr>
                     <td>{{ $index + 1 + ($users->currentPage() - 1) * $users->perPage() }}</td>
-                    <td><img src="{{ asset($user->Avatar ?? 'WebAdmin/img/people.png') }}" alt="Ảnh" width="50"></td>
+                    <td>
+                        @if ($user->Avatar)
+                            <img src="{{ asset('uploads/' . $user->Avatar) }}" width="60" height="60" alt="avatar">
+                        @else
+                            <span>Không có ảnh</span>
+                        @endif
+                    </td>
                     <td>{{ $user->Name }}</td>
                     <td>{{ $user->Email }}</td>
                     <td>{{ $user->Phone }}</td>

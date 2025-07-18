@@ -28,7 +28,7 @@
         </div>
     @endif
 
-    <form action="{{ route('admin.users.store') }}" method="POST">
+    <form action="{{ route('admin.users.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="form-group">
     <label for="Role_ID">Quyền</label>
@@ -85,6 +85,10 @@
             <label for="Address">Địa chỉ</label>
             <textarea id="Address" name="Address" rows="3"></textarea>
         </div>
+        <div class="form-group">
+        <label for="Avatar">Ảnh đại diện</label>
+        <input type="file" name="Avatar" id="Avatar" accept="image/*">
+    </div>
 
         <div class="form-group">
             <label for="Status">Trạng thái</label>
