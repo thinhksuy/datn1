@@ -61,8 +61,8 @@ class DashboardController extends Controller
 
     // Thống kê lịch đặt sân mới trong tháng hiện tại
     $newCourtBookings = DB::table('court_booking')
-        ->whereMonth('created_at', $month)
-        ->whereYear('created_at', $year)
+        ->whereMonth('create_at', $month)
+        ->whereYear('create_at', $year)
         ->count();
 
     // Thống kê tổng số đơn hàng
