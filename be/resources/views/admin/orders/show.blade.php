@@ -5,11 +5,14 @@
     <div class="left">
         <h1>Chi tiết đơn hàng</h1>
         <ul class="breadcrumb">
-            <li><a href="#">Đơn hàng</a></li>
+            <li><a href="{{ route('admin.orders.index') }}">Đơn hàng</a></li>
             <li><i class='bx bx-chevron-right'></i></li>
             <li><a class="active" href="#">Chi tiết</a></li>
         </ul>
     </div>
+    <a href="{{ route('admin.orders.index') }}" class="btn-download">
+                    <span class="text">Quay lại</span>
+                </a>
 </div>
 
 {{-- Thông tin đơn hàng --}}
@@ -23,7 +26,7 @@
         <p><strong>Phương thức thanh toán:</strong> {{ $order->payment_method }}</p>
         <p><strong>Phí vận chuyển:</strong> {{ number_format($order->shiping_fee, 0, ',', '.') }}₫</p>
         <p><strong>Tổng tiền:</strong> <span style="color: #d32f2f">{{ number_format($order->total_amount, 0, ',', '.') }}₫</span></p>
-        <p><strong>Trạng thái:</strong> 
+        <p><strong>Trạng thái:</strong>
             <span style="color: {{ $order->status === 'completed' ? 'green' : ($order->status === 'cancelled' ? 'red' : '#FFA500') }}">
                 {{ ucfirst($order->status) }}
             </span>
@@ -43,7 +46,7 @@
                 <th style="padding: 10px; border-bottom: 1px solid #ddd;">Giá</th>
                 <th style="padding: 10px; border-bottom: 1px solid #ddd;">Số lượng</th>
                 <th style="padding: 10px; border-bottom: 1px solid #ddd;">Thành tiền</th>
-                <th style="padding: 10px; border-bottom: 1px solid #ddd;">Thao tác</th>
+                {{-- <th style="padding: 10px; border-bottom: 1px solid #ddd;">Thao tác</th> --}}
             </tr>
         </thead>
         <tbody>
@@ -55,13 +58,13 @@
                     <td style="padding: 10px; border-bottom: 1px solid #eee;">{{ number_format($detail->price, 0, ',', '.') }}₫</td>
                     <td style="padding: 10px; border-bottom: 1px solid #eee;">{{ $detail->quantity }}</td>
                     <td style="padding: 10px; border-bottom: 1px solid #eee;">{{ number_format($detail->total, 0, ',', '.') }}₫</td>
-                    <td style="padding: 10px; border-bottom: 1px solid #eee;">
+                    {{-- <td style="padding: 10px; border-bottom: 1px solid #eee;">
     <form action="{{ route('admin.order-details.destroy', $detail->order_detail_id) }}" method="POST" onsubmit="return confirm('Bạn có chắc muốn xoá sản phẩm này khỏi đơn hàng?');">
         @csrf
         @method('DELETE')
         <button type="submit" style="color: red; background: none; border: none; cursor: pointer;">Xoá</button>
     </form>
-</td>
+</td> --}}
 
                 </tr>
             @endforeach

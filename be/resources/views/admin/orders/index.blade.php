@@ -51,7 +51,7 @@ form select:focus {
         <div class="alert alert-success" style="margin: 15px 0;">{{ session('success') }}</div>
     @endif
 <div class="body-content">
- 
+
     <!-- =========================
      Bộ lọc đơn hàng
 ============================ -->
@@ -131,11 +131,14 @@ form select:focus {
                         <a href="{{ route('admin.orders.show', $order->order_id) }}" style="display:block; width:100%; height:100%; color:inherit; text-decoration:none;">Xem</a>
                     </button>
 
+                    @if ($order->status !== 'cancelled')
                     <!-- Nút Sửa -->
                     <button class="admin-button-table">
                         <a href="{{ route('admin.orders.edit', $order->order_id) }}" style="display:block; width:100%; height:100%; color:inherit; text-decoration:none;">Sửa</a>
                     </button>
+                    @endif
                 </td>
+
 
 
             </tr>

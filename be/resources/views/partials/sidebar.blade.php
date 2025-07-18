@@ -256,26 +256,26 @@
 			</a>
 			<ul class="submenu">
 				<li>
-					<a href="{{ route('admin.statistics.revenue') }}"  class="{{ request()->routeIs('admin.statistics.revenue.*') ? 'active1' : '' }}">
+					<a href="{{ route('admin.statistics.revenue') }}"  class="{{ request()->routeIs('admin.statistics.revenue*') ? 'active1' : '' }}">
 						<i class='bx bx-bar-chart'></i>
 						<span class="text">Thống kê doanh thu</span>
 					</a>
 				</li>
 				<li>
-					<a href="{{ route('admin.statistics.order') }}"  class="{{ request()->routeIs('admin.statistics.order.*') ? 'active1' : '' }}">
+					<a href="{{ route('admin.statistics.order') }}"  class="{{ request()->routeIs('admin.statistics.order*') ? 'active1' : '' }}">
 						<i class='bx bx-bar-chart'></i>
 						<span class="text">Thống kê đơn hàng</span>
 					</a>
 				</li>
 
                 <li>
-					<a href="{{ route('admin.statistics.booking') }}"  class="{{ request()->routeIs('admin.statistics.booking.*') ? 'active1' : '' }}">
+					<a href="{{ route('admin.statistics.booking') }}"  class="{{ request()->routeIs('admin.statistics.booking*') ? 'active1' : '' }}">
 						<i class='bx bx-bar-chart'></i>
 						<span class="text">Thống kê lịch đặt sân</span>
 					</a>
 				</li>
                 <li>
-					<a href="{{ route('admin.statistics.product') }}"  class="{{ request()->routeIs('admin.statistics.product.*') ? 'active1' : '' }}">
+					<a href="{{ route('admin.statistics.product') }}"  class="{{ request()->routeIs('admin.statistics.product*') ? 'active1' : '' }}">
 						<i class='bx bx-bar-chart'></i>
 						<span class="text">Thống kê sản phẩm</span>
 					</a>

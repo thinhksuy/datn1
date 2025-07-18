@@ -65,6 +65,13 @@ class OrderController extends Controller
     ]);
 
     $order = Order::findOrFail($id);
+    // ❌ Nếu đơn đã hủy, không cho cập nhật nữa
+    if ($order->status === 'cancelled') {
+        return redirect()->back()->with('error', 'Đơn hàng đã hủy và không thể cập nhật trạng thái.');
+    }
+
+    // ✅ Tiến hành cập nhật
+    $order->status = $request->input('status');
 
     $order->shipping_address = $validated['shipping_address'];
     $order->note_user        = $validated['note_user'];
