@@ -109,16 +109,27 @@
         </div>
 
         <div class="form-group">
-            <label for="vouchers_id">Mã giảm giá (nếu có)</label>
-            <select name="vouchers_id" id="vouchers_id">
-                <option value="">-- Không chọn --</option>
-                @foreach($vouchers as $voucher)
-                    <option value="{{ $voucher->id }}" {{ old('vouchers_id', $booking->Vouchers_ID) == $voucher->id ? 'selected' : '' }}>
+    <label for="vouchers_id">Mã giảm giá (nếu có)</label>
+    <select id="vouchers_id" class="form-control" disabled>
+        @if ($booking->Vouchers_ID)
+            @foreach($vouchers as $voucher)
+                @if($voucher->Vouchers_ID == $booking->Vouchers_ID)
+                    <option selected>
                         {{ $voucher->Code }} - {{ $voucher->Discount }}%
                     </option>
-                @endforeach
-            </select>
-        </div>
+                @endif
+            @endforeach
+        @else
+            <option selected>-- Không áp dụng --</option>
+        @endif
+    </select>
+
+    <!-- Input hidden để gửi dữ liệu về server -->
+    <input type="hidden" name="vouchers_id" value="{{ $booking->Vouchers_ID }}">
+</div>
+
+
+
 
         <div class="form-actions">
             <button type="submit">Cập nhật lịch đặt</button>

@@ -14,23 +14,15 @@
         <span class="text">+ Thêm voucher mới</span>
     </a>
 </div>
-
-<div class="body-content">
-    <h1>Quản lý Voucher</h1>
     @if (session('success'))
     <div class="alert alert-success" corlo>
         {{ session('success') }}
     </div>
 @endif
- @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+
+<div class="body-content">
+    <h1>Quản lý Voucher</h1>
+
 
 
     <table>

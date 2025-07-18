@@ -62,7 +62,9 @@
 		<span class="text">+ Thêm sản phẩm mới</span>
 	</a>
 </div>
-
+@if(session('success'))
+        <div class="alert alert-success" style="margin: 15px 0;">{{ session('success') }}</div>
+    @endif
 <!-- =========================
      Form lọc sản phẩm
 ============================ -->
@@ -136,11 +138,11 @@
             <tr>
                 <td>{{ $key + 1 + ($products->currentPage() - 1) * $products->perPage() }}</td>
                 <td>
-                    @if($product->images->count())
-                        <img src="{{ asset($product->images->first()->Image_path) }}" width="50">
-                    @else
-                        <img src="{{ asset('WebAdmin/img/no-image.png') }}" width="50">
-                    @endif
+                    @if ($product->Image)
+                    <img src="{{ asset('uploads/products/' . $product->images) }}" width="60" height="60" alt="Hình sản phẩm">
+                @else
+                    <span>Không có ảnh</span>
+                @endif
                 </td>
                 <td>{{ $product->Name }}</td>
                 <td>{{ number_format($product->Price, 0, ',', '.') }}₫</td>

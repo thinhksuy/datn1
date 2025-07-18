@@ -774,10 +774,12 @@ body {
 /* Nút Xóa: đỏ */
 .admin-button-table:last-child {
     background-color: #e74c3c;
+    margin-bottom: 5px;
 }
 
 .admin-button-table:last-child:hover {
     background-color: #c0392b;
+
 }
 
 /* Nút Sửa: xanh dương */

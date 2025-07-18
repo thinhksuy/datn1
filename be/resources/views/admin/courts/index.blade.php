@@ -20,7 +20,9 @@
                     <span class="text">+ Thêm sân mới</span>
                 </a>
 			</div>
-
+@if(session('success'))
+        <div class="alert alert-success" style="margin: 15px 0;">{{ session('success') }}</div>
+    @endif
 <div class="body-content">
     <div>
         <table>
@@ -41,8 +43,11 @@
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>
-                            <img src="{{ $court->Image ? asset('storage/' . $court->Image) : 'https://via.placeholder.com/100x70?text=No+Image' }}"
-                                 class="image-thumb" alt="Court Image">
+                             @if ($court->Image)
+                                <img src="{{ asset($court->Image) }}" width="100" alt="Image">
+                            @else
+                                <span>Không có ảnh</span>
+                            @endif
                         </td>
                         <td>{{ $court->Name }}</td>
                         <td>{{ $court->Location }}</td>

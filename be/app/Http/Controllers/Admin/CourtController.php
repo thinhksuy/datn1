@@ -38,7 +38,11 @@ class CourtController extends Controller
         ]);
 
         if ($request->hasFile('Image')) {
-            $data['Image'] = $request->file('Image')->store('courts', 'public');
+            $file = $request->file('Image');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/courts'), $filename);
+            $data['Image'] = 'uploads/courts/' . $filename;
+
         }
 
         $data['Created_at'] = now();
@@ -74,12 +78,17 @@ class CourtController extends Controller
         ]);
 
         if ($request->hasFile('Image')) {
-            if ($court->Image && Storage::disk('public')->exists($court->Image)) {
-                Storage::disk('public')->delete($court->Image);
+            // Xóa ảnh cũ nếu tồn tại
+            if ($court->Image && file_exists(public_path($court->Image))) {
+                unlink(public_path($court->Image));
             }
 
-            $data['Image'] = $request->file('Image')->store('courts', 'public');
+            $file = $request->file('Image');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/courts'), $filename);
+            $data['Image'] = 'uploads/courts/' . $filename;
         }
+
 
         $data['Updated_at'] = now();
 
@@ -93,9 +102,10 @@ class CourtController extends Controller
     {
         $court = Court::findOrFail($id);
 
-        if ($court->Image && Storage::disk('public')->exists($court->Image)) {
-            Storage::disk('public')->delete($court->Image);
+        if ($court->Image && file_exists(public_path($court->Image))) {
+            unlink(public_path($court->Image));
         }
+
 
         $court->delete();
 

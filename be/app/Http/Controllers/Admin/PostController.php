@@ -37,12 +37,15 @@ class PostController extends Controller
         ]);
 
         if ($request->hasFile('Thumbnail')) {
-            $imagePath = $request->file('Thumbnail')->store('uploads/admin/posts', 'public');
-            $validated['Thumbnail'] = '/storage/' . $imagePath;
+            $image = $request->file('Thumbnail');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('uploads/posts'), $imageName);
+            $validated['Thumbnail'] = 'uploads/posts/' . $imageName;
         }
 
+
         Post::create($validated);
-        return redirect()->route('admin.posts.index')->with('success', 'Post created successfully.');
+        return redirect()->route('admin.posts.index')->with('success', 'Tạo bài viết thành công!');
     }
 
     public function show($id)
@@ -75,20 +78,32 @@ class PostController extends Controller
         ]);
 
         if ($request->hasFile('Thumbnail')) {
-            $imagePath = $request->file('Thumbnail')->store('uploads/admin/posts', 'public');
-            $validated['Thumbnail'] = '/storage/' . $imagePath;
+            $image = $request->file('Thumbnail');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('uploads/posts'), $imageName);
+            $validated['Thumbnail'] = 'uploads/posts/' . $imageName;
         }
+
+
 
         $validated['Updated_at'] = now();
 
         $post->update($validated);
-        return redirect()->route('admin.posts.index')->with('success', 'Post updated successfully.');
+        return redirect()->route('admin.posts.index')->with('success', 'Cập nhật bài viết thành công!');
     }
 
     public function destroy($id)
-    {
-        $post = Post::findOrFail($id);
-        $post->delete();
-        return redirect()->route('admin.posts.index')->with('success', 'Post deleted successfully.');
+{
+    $post = Post::findOrFail($id);
+
+    // Xoá ảnh nếu tồn tại
+    if ($post->Thumbnail && file_exists(public_path($post->Thumbnail))) {
+        unlink(public_path($post->Thumbnail));
     }
+
+    $post->delete();
+
+    return redirect()->route('admin.posts.index')->with('success', 'Xóa bài viết thành công!');
+}
+
 }

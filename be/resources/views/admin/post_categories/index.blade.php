@@ -14,16 +14,12 @@
 		<span class="text">+ Thêm danh mục mới</span>
 	</a>
     </div>
-
+@if(session('success'))
+        <div class="alert alert-success" style="margin: 15px 0;">{{ session('success') }}</div>
+    @endif
     <div class="body-content">
         <h2>Quản lý Danh Mục</h2>
 
-        {{-- Hiển thị thông báo thành công --}}
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
 
         <table>
             <thead>

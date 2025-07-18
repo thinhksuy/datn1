@@ -50,17 +50,26 @@
         </div>
 
         <div class="form-group">
+            <label for="Image">Hình ảnh hiện tại</label>
+            @if ($court->Image)
+                <img src="{{ asset($court->Image) }}" alt="Court Image" class="image-preview">
+            @else
+                <span>Không có ảnh</span>
+            @endif
+
+        <div class="form-group">
             <label for="Image">Hình ảnh mới (tùy chọn)</label>
             <input type="file" name="Image" id="Image" accept="image/*">
-            @if($court->Image)
-                <img src="{{ asset('storage/' . $court->Image) }}" alt="Court Image" class="image-preview">
-            @endif
         </div>
 
-        <div class="form-check">
-            <input type="checkbox" name="Status" id="Status" value="1" {{ $court->Status ? 'checked' : '' }}>
-            <label for="Status">Hiển thị sân (trạng thái hoạt động)</label>
+        <div class="form-group">
+            <label for="Status">Trạng thái</label>
+            <select name="Status" id="Status" required>
+                <option value="1" {{ $court->Status == 1 ? 'selected' : '' }}>Hiển thị</option>
+                <option value="0" {{ $court->Status == 0 ? 'selected' : '' }}>Ẩn</option>
+            </select>
         </div>
+
 
         <div class="form-actions">
             <button type="submit" class="btn btn-save">Lưu thay đổi</button>

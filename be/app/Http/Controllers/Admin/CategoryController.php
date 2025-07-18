@@ -23,26 +23,27 @@ class CategoryController extends Controller
 
     // Lưu danh mục mới
     public function store(Request $request)
-    {
-        $request->validate([
-            'Name' => 'required|string|max:255',
-            'Description' => 'nullable|string',
-            'Image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+{
+    $request->validate([
+        'Name' => 'required|string|max:255',
+        'Description' => 'nullable|string',
+        'Image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
 
-        $data = $request->only(['Name', 'Description']);
+    $data = $request->only(['Name', 'Description']);
 
-        if ($request->hasFile('Image')) {
-            $image = $request->file('Image');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->move(public_path('uploads/categories'), $imageName);
-            $data['Image'] = 'uploads/categories/' . $imageName;
-        }
-
-        Category::create($data);
-
-        return redirect()->route('admin.categories.index')->with('success', 'Thêm danh mục thành công!');
+    if ($request->hasFile('Image')) {
+        $image = $request->file('Image');
+        $imageName = time() . '_' . $image->getClientOriginalName();
+        $image->move(public_path('uploads/products'), $imageName);
+        $data['Image'] = 'uploads/products/' . $imageName;
     }
+
+    Category::create($data);
+
+    return redirect()->route('admin.categories.index')->with('success', 'Thêm danh mục thành công!');
+}
+
 
     // Form chỉnh sửa danh mục
     public function edit($id)
@@ -53,36 +54,49 @@ class CategoryController extends Controller
 
     // Cập nhật danh mục
     public function update(Request $request, $id)
-    {
-        $request->validate([
-            'Name' => 'required|string|max:255',
-            'Description' => 'nullable|string',
-            'Image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+{
+    $category = Category::findOrFail($id);
 
-        $category = Category::findOrFail($id);
+    $request->validate([
+        'Name' => 'required|string|max:255',
+        'Description' => 'nullable|string',
+        'Image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
 
-        $category->Name = $request->Name;
-        $category->Description = $request->Description;
+    $data = $request->only(['Name', 'Description']);
 
-        if ($request->hasFile('Image')) {
-            $image = $request->file('Image');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->move(public_path('uploads/categories'), $imageName);
-            $category->Image = 'uploads/categories/' . $imageName;
+    if ($request->hasFile('Image')) {
+        // Xóa ảnh cũ nếu có
+        if ($category->Image && file_exists(public_path($category->Image))) {
+            unlink(public_path($category->Image));
         }
 
-        $category->save();
-
-        return redirect()->route('admin.categories.index')->with('success', 'Cập nhật danh mục thành công!');
+        $image = $request->file('Image');
+        $imageName = time() . '_' . $image->getClientOriginalName();
+        $image->move(public_path('uploads/products'), $imageName);
+        $data['Image'] = 'uploads/products/' . $imageName;
     }
+
+    $category->update($data);
+
+    return redirect()->route('admin.categories.index')->with('success', 'Cập nhật danh mục thành công!');
+}
+
 
     // Xóa danh mục
-    public function destroy($id)
-    {
-        $category = Category::findOrFail($id);
-        $category->delete();
+   public function destroy($id)
+{
+    $category = Category::findOrFail($id);
 
-        return redirect()->route('admin.categories.index')->with('success', 'Xóa danh mục thành công!');
+    // Xoá ảnh nếu có
+    if ($category->Image && file_exists(public_path($category->Image))) {
+        unlink(public_path($category->Image));
     }
+
+    $category->delete();
+
+    return redirect()->route('admin.categories.index')->with('success', 'Xoá danh mục thành công!');
+}
+
+
 }

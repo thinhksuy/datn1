@@ -10,9 +10,11 @@
             <li><a class="active" href="#">Chỉnh sửa</a></li>
         </ul>
     </div>
+    <a href="{{ route('admin.orders.index') }}" class="btn-download">
+            <span class="text">Quay lại</span></a>
 </div>
 
-<div class="form-edit">
+<div class="form-add">
     <form action="{{ route('admin.orders.update', $order->order_id) }}" method="POST">
         @csrf
         @method('PUT')
@@ -69,7 +71,7 @@
 
         <div class="form-actions">
             <button type="submit">Cập nhật</button>
-            <a href="{{ route('admin.orders.index') }}" style="margin-left: 10px;">Quay lại</a>
+            {{-- <a href="{{ route('admin.orders.index') }}" style="margin-left: 10px;">Quay lại</a> --}}
         </div>
     </form>
 </div>

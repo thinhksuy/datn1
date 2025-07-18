@@ -25,6 +25,7 @@
             <thead>
                 <tr>
                     <th>STT</th>
+                    <th>Ảnh</th>
                     <th>Tiêu đề</th>
                     <th>Người viết</th>
                     <th>Danh mục</th>
@@ -37,9 +38,13 @@
                 @foreach ($posts as $key => $post)
                     <tr>
                         <td>{{ $key + 1 }}</td>
-                        {{-- <td>
-                            <img src="{{ $post->Thumbnail ?? asset('img/default.png') }}" alt="thumb" width="60" height="40" style="object-fit: cover; border-radius: 4px;">
-                        </td> --}}
+                        <td>
+                            @if ($post->Thumbnail)
+                                <img src="{{ asset($post->Thumbnail) }}" width="100" alt="Thumbnail">
+                            @else
+                                <span>Không có ảnh</span>
+                            @endif
+                        </td>
                         <td>{{ $post->Title }}</td>
                         <td>{{ $post->user->Name ?? 'Không rõ' }}</td>
                         <td>{{ $post->category->Title ?? 'Không có' }}</td>

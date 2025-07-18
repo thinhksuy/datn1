@@ -14,11 +14,12 @@
 		<span class="text">+ Thêm vai trò mới</span>
 	</a>
     </div>
+    @if(session('success'))
+        <div class="alert alert-success" style="margin: 15px 0;">{{ session('success') }}</div>
+    @endif
 <div class="body-content">
     <h1>Danh sách Vai Trò</h1>
-    @if (session('success'))
-        <div style="color: green">{{ session('success') }}</div>
-    @endif
+
 
     <table>
         <thead>

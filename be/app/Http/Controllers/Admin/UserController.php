@@ -69,7 +69,9 @@ class UserController extends Controller
     if ($request->hasFile('Avatar')) {
         $file = $request->file('Avatar');
         $filename = time() . '_' . $file->getClientOriginalName();
-        $file->move(public_path('uploads'), $filename);
+        $file->move(public_path('uploads/users'), $filename);
+        $user->Avatar = 'uploads/users/' . $filename; // lưu đường dẫn tương đối để hiển thị
+
         $user->Avatar = $filename;
     }
 

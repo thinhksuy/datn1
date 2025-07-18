@@ -41,7 +41,7 @@ public function updateStatus(Request $request, $id)
         ]);
 
         Comment::create($validated);
-        return redirect()->route('comments.index')->with('success', 'Comment created successfully.');
+        return redirect()->route('comments.index')->with('success', 'Tạo bình luận thành công!');
     }
 
     public function show($id)
@@ -72,13 +72,13 @@ public function updateStatus(Request $request, $id)
         $validated['Update_at'] = now();
 
         $comment->update($validated);
-        return redirect()->route('comments.index')->with('success', 'Comment updated successfully.');
+        return redirect()->route('comments.index')->with('success', 'Cập nhật bình luận thành công!');
     }
 
     public function destroy($id)
     {
         $comment = Comment::findOrFail($id);
         $comment->delete();
-        return redirect()->route('comments.index')->with('success', 'Comment deleted successfully.');
+        return redirect()->route('comments.index')->with('success', 'Xóa bình luận thành công!');
     }
 }

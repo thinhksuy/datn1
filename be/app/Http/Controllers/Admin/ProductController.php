@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\ProductAttribute;
 use App\Models\ProductValue;
 use App\Models\ProductVariant;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -82,7 +83,7 @@ class ProductController extends Controller
 
         if ($request->hasFile('Image')) {
             $path = $request->file('Image')->store('uploads/products', 'public');
-            $validated['Image'] = 'storage/' . $path;
+            $validated['Image'] = 'uploads/products/' . $path;
         }
 
         $validated['Status'] = $request->has('Status') ? 1 : 0;
@@ -211,12 +212,26 @@ class ProductController extends Controller
     }
 
     public function destroy($id)
-    {
-        $product = Product::findOrFail($id);
-        $product->delete();
+{
+    $product = Product::findOrFail($id);
 
-        return redirect()->route('admin.products.index')->with('success', 'Xóa sản phẩm thành công!');
+    // Xoá ảnh chính
+    if ($product->Image && Storage::disk('public')->exists(str_replace('storage/', '', $product->Image))) {
+        Storage::disk('public')->delete(str_replace('storage/', '', $product->Image));
     }
+
+    // Xoá các ảnh gallery
+    foreach ($product->images as $image) {
+        if ($image->Image_path && Storage::disk('public')->exists(str_replace('storage/', '', $image->Image_path))) {
+            Storage::disk('public')->delete(str_replace('storage/', '', $image->Image_path));
+        }
+        $image->delete(); // Xoá bản ghi ảnh khỏi CSDL
+    }
+
+    $product->delete(); // Xoá sản phẩm
+
+    return redirect()->route('admin.products.index')->with('success', 'Xóa sản phẩm thành công!');
+}
 
 
 }

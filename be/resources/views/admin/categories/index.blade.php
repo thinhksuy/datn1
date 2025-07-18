@@ -16,7 +16,9 @@
 		<span class="text">+ Thêm danh mục mới</span>
 	</a>
 </div>
-
+@if(session('success'))
+        <div class="alert alert-success" style="margin: 15px 0;">{{ session('success') }}</div>
+    @endif
 <div class="body-content">
 	<table>
 		<thead>

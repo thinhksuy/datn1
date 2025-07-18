@@ -47,11 +47,11 @@ form select:focus {
         </ul>
     </div>
 </div>
-
-<div class="body-content">
-    @if (session('success'))
-        <div style="color: green;">{{ session('success') }}</div>
+@if(session('success'))
+        <div class="alert alert-success" style="margin: 15px 0;">{{ session('success') }}</div>
     @endif
+<div class="body-content">
+ 
     <!-- =========================
      Bộ lọc đơn hàng
 ============================ -->
