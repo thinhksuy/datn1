@@ -233,8 +233,8 @@ class ProductController extends Controller
 {
     $product = Product::findOrFail($id);
 
-    if ($product->Image && file_exists(public_path($product->Image))) {
-            unlink(public_path($product->Image));
+        if ($product->Image && file_exists(public_path($product->Image))) {
+                unlink(public_path($product->Image));
         }
 
         foreach ($product->images as $image) {
