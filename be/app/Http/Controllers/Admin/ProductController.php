@@ -82,9 +82,12 @@ class ProductController extends Controller
         ]);
 
         if ($request->hasFile('Image')) {
-            $path = $request->file('Image')->store('uploads/products', 'public');
-            $validated['Image'] = 'uploads/products/' . $path;
+            $file = $request->file('Image');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/products'), $fileName);
+            $validated['Image'] = 'uploads/products/' . $fileName;
         }
+
 
         $validated['Status'] = $request->has('Status') ? 1 : 0;
         $validated['Created_at'] = now();
@@ -92,10 +95,15 @@ class ProductController extends Controller
 
         if ($request->hasFile('Images')) {
             foreach ($request->file('Images') as $img) {
-                $path = $img->store('uploads/products/gallery', 'public');
-                $product->images()->create(['Image_path' => 'storage/' . $path]);
+                $fileName = time() . '_' . $img->getClientOriginalName();
+                $img->move(public_path('uploads/products/gallery'), $fileName);
+                $product->images()->create([
+                    'Image_path' => 'uploads/products/gallery/' . $fileName
+                ]);
             }
         }
+
+
 
         if ($request->has('variant')) {
             $variantData = $request->input('variant');
@@ -153,9 +161,12 @@ class ProductController extends Controller
         ]);
 
         if ($request->hasFile('Image')) {
-            $path = $request->file('Image')->store('uploads/products', 'public');
-            $validated['Image'] = 'storage/' . $path;
+            $file = $request->file('Image');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/products'), $fileName);
+            $validated['Image'] = 'uploads/products/' . $fileName;
         }
+
 
         $validated['Status'] = $request->has('Status') ? 1 : 0;
         $validated['Updated_at'] = now();
@@ -163,10 +174,17 @@ class ProductController extends Controller
 
         if ($request->hasFile('Images')) {
             foreach ($request->file('Images') as $img) {
-                $path = $img->store('uploads/products/gallery', 'public');
-                $product->images()->create(['Image_path' => 'storage/' . $path]);
+                $fileName = time() . '_' . $img->getClientOriginalName();
+                $img->move(public_path('uploads/products/gallery'), $fileName);
+
+                $product->images()->create([
+                    'Image_path' => 'uploads/products/gallery/' . $fileName
+                ]);
             }
         }
+
+
+
 
         if ($request->has('variant')) {
             $variantData = $request->input('variant');
@@ -215,20 +233,19 @@ class ProductController extends Controller
 {
     $product = Product::findOrFail($id);
 
-    // Xoá ảnh chính
-    if ($product->Image && Storage::disk('public')->exists(str_replace('storage/', '', $product->Image))) {
-        Storage::disk('public')->delete(str_replace('storage/', '', $product->Image));
-    }
-
-    // Xoá các ảnh gallery
-    foreach ($product->images as $image) {
-        if ($image->Image_path && Storage::disk('public')->exists(str_replace('storage/', '', $image->Image_path))) {
-            Storage::disk('public')->delete(str_replace('storage/', '', $image->Image_path));
+    if ($product->Image && file_exists(public_path($product->Image))) {
+            unlink(public_path($product->Image));
         }
-        $image->delete(); // Xoá bản ghi ảnh khỏi CSDL
-    }
 
-    $product->delete(); // Xoá sản phẩm
+        foreach ($product->images as $image) {
+            if ($image->Image_path && file_exists(public_path($image->Image_path))) {
+                unlink(public_path($image->Image_path));
+            }
+            $image->delete();
+        }
+
+
+    $product->delete();
 
     return redirect()->route('admin.products.index')->with('success', 'Xóa sản phẩm thành công!');
 }

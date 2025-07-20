@@ -1,6 +1,58 @@
 @extends('layouts.layout')
 
 @section('content')
+<style>
+    .product-attributes {
+        margin-top: 20px;
+        background: #fff;
+        padding: 15px;
+    }
+
+    .product-attributes h3 {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .form-group-attribute {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 20px;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .form-group-attribute .attribute-name {
+        min-width: 150px;
+        font-weight: 600;
+        font-size: 16px;
+        color: #444;
+    }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 15px;
+            max-width: 100%;
+            white-space: nowrap;
+            padding-bottom: 5px;
+        }
+
+
+    .checkbox-group label {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+        margin-right: 6px;
+        transform: scale(1.2);
+        accent-color: #007bff;
+    }
+</style>
 
 <!-- =========================
      Tiêu đề trang
@@ -133,25 +185,27 @@
              Thuộc tính sản phẩm
         ============================= -->
         @if(isset($attributes) && count($attributes) > 0)
-            <hr>
-            <h3>Thuộc tính sản phẩm</h3>
-            @foreach ($attributes as $attribute)
-                <div class="form-group">
-                    <label>{{ $attribute->Name }}</label>
-                    <div style="display: flex; flex-wrap: wrap; gap: 15px;">
-                        @foreach ($attribute->values as $value)
-                            <label>
-                                <input type="checkbox"
-                                       name="variant[Values_IDs][]"
-                                       value="{{ $value->Values_ID }}"
-                                       {{ in_array($value->Values_ID, $selectedValueIDs ?? []) ? 'checked' : '' }}>
-                                {{ $value->Value }}
-                            </label>
-                        @endforeach
+            <div class="product-attributes">
+                <h3>Thuộc tính sản phẩm</h3>
+                @foreach ($attributes as $attribute)
+                    <div class="form-group-attribute">
+                        <div class="attribute-name">{{ $attribute->Name }}</div>
+                        <div class="checkbox-group">
+                            @foreach ($attribute->values->unique('Value') as $value)
+                                <label>
+                                    <input type="checkbox"
+                                        name="variant[Values_IDs][]"
+                                        value="{{ $value->Values_ID }}"
+                                        {{ in_array($value->Values_ID, $selectedValueIDs ?? []) ? 'checked' : '' }}>
+                                    {{ $value->Value }}
+                                </label>
+                            @endforeach
+                        </div>
                     </div>
-                </div>
-            @endforeach
+                @endforeach
+            </div>
         @endif
+
 
         <!-- =========================
              SKU của biến thể chính

@@ -139,10 +139,11 @@
                 <td>{{ $key + 1 + ($products->currentPage() - 1) * $products->perPage() }}</td>
                 <td>
                     @if ($product->Image)
-                    <img src="{{ asset('uploads/products/' . $product->images) }}" width="60" height="60" alt="Hình sản phẩm">
-                @else
-                    <span>Không có ảnh</span>
-                @endif
+                        <img src="{{ asset($product->Image) }}" width="60" height="60" alt="Hình sản phẩm">
+                    @else
+                        <span>Không có ảnh</span>
+                    @endif
+
                 </td>
                 <td>{{ $product->Name }}</td>
                 <td>{{ number_format($product->Price, 0, ',', '.') }}₫</td>
