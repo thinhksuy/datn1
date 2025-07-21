@@ -42,16 +42,65 @@
   transition: border-color 0.3s ease;
 }
 
-.register-form input:hover {
+.register-form select {
+  width: 100%;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 15px;
+  color: #333;
+  background-color: #fff;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+}
+
+.register-form input:hover,
+.register-form select:hover {
   outline: none;
   border-color: #007bff;
   box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
 }
 
-.register-form input:focus {
+.register-form input:focus,
+.register-form select:focus {
   outline: none;
   border-color: #007bff;
   box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+
+.password-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding: 12px 40px 12px 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 20px;
+  color: #888;
+  user-select: none;
+}
+
+.toggle-password:hover {
+  color: #007bff;
 }
 
 .terms {
@@ -76,7 +125,7 @@
 }
 
 .register-form button {
- width: 100%;
+  width: 100%;
   padding: 14px;
   background-color: #007bff;
   border: none;
@@ -123,33 +172,4 @@
   .register-form button {
     font-size: 14px;
   }
-}
-.password-wrapper {
-  position: relative;
-  width: 100%;
-  margin-bottom: 16px;
-}
-
-.password-wrapper input {
-  width: 100%;
-  padding: 12px 40px 12px 12px; /* chừa khoảng cho icon */
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.toggle-password {
-  position: absolute;
-  top: 50%;
-  right: 12px;
-  transform: translateY(-50%);
-  cursor: pointer;
-  font-size: 20px;
-  color: #888;
-  user-select: none;
-}
-
-.toggle-password:hover {
-  color: #007bff; /* Màu xanh khi hover */
 }

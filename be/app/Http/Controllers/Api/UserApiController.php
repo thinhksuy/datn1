@@ -10,13 +10,13 @@ use Illuminate\Support\Facades\Validator;
 
 class UserApiController extends Controller
 {
-    // GET /api/users
+    // ✅ GET /api/users
     public function index()
     {
         return response()->json(User::all(), 200);
     }
 
-    // GET /api/users/{id}
+    // ✅ GET /api/users/{id}
     public function show($id)
     {
         $user = User::find($id);
@@ -26,7 +26,7 @@ class UserApiController extends Controller
         return response()->json($user, 200);
     }
 
-    // POST /api/users
+    // ✅ POST /api/users (Đăng ký)
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -62,7 +62,7 @@ class UserApiController extends Controller
         return response()->json($user, 201);
     }
 
-    // PUT /api/users/{id}
+    // ✅ PUT /api/users/{id} (Cập nhật)
     public function update(Request $request, $id)
     {
         $user = User::find($id);
@@ -87,7 +87,6 @@ class UserApiController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        // Duyệt tất cả các field đã validate và gán
         foreach ($request->only([
             'Role_ID','Name','Email','Password',
             'Phone','Gender','Date_of_birth','Avatar',
@@ -104,7 +103,7 @@ class UserApiController extends Controller
         return response()->json($user, 200);
     }
 
-    // DELETE /api/users/{id}
+    // ✅ DELETE /api/users/{id}
     public function destroy($id)
     {
         $user = User::find($id);
@@ -113,5 +112,29 @@ class UserApiController extends Controller
         }
         $user->delete();
         return response()->json(['message' => 'User deleted'], 200);
+    }
+
+    // ✅ POST /api/login (Đăng nhập)
+    public function login(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email'    => 'required|email',
+            'password' => 'required|string'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $user = User::where('Email', $request->email)->first();
+
+        if (! $user || ! Hash::check($request->password, $user->Password)) {
+            return response()->json(['message' => 'Email hoặc mật khẩu không đúng'], 401);
+        }
+
+        return response()->json([
+            'message' => 'Đăng nhập thành công',
+            'user'    => $user,
+        ], 200);
     }
 }

@@ -1,14 +1,63 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
 
 const LoginForm = () => {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await axios.post("http://localhost:8000/api/login", {
+        email: formData.email,
+        password: formData.password,
+      });
+
+      // ✅ Lưu token và user vào localStorage
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+
+      toast.success("Đăng nhập thành công!");
+
+      // ✅ Delay chuyển trang để người dùng kịp thấy thông báo
+      setTimeout(() => {
+        navigate("/"); // chuyển về trang chủ
+      }, 1500);
+    } catch (err) {
+      if (err.response?.data?.errors) {
+        const firstError = Object.values(err.response.data.errors)[0][0];
+        toast.error(`❌ ${firstError}`);
+      } else if (err.response?.data?.message) {
+        toast.error(`❌ ${err.response.data.message}`);
+      } else {
+        toast.error("❌ Đã xảy ra lỗi, thử lại sau.");
+      }
+    }
+  };
 
   return (
     <div className="login-wrapper">
+      <ToastContainer />
       <motion.form
         className="login-form"
+        onSubmit={handleSubmit}
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
@@ -17,7 +66,10 @@ const LoginForm = () => {
 
         <motion.input
           type="email"
+          name="email"
           placeholder="Vui lòng nhập email"
+          value={formData.email}
+          onChange={handleChange}
           whileFocus={{ scale: 1.02 }}
           transition={{ type: "spring", stiffness: 300 }}
           required
@@ -30,13 +82,16 @@ const LoginForm = () => {
         >
           <input
             type={showPassword ? "text" : "password"}
+            name="password"
             placeholder="Vui lòng nhập mật khẩu"
+            value={formData.password}
+            onChange={handleChange}
             required
           />
           <motion.span
             className="eye-icon"
             onClick={() => setShowPassword(!showPassword)}
-whileHover={{ scale: 1.2, y: "-50%" }} // giữ lại translateY(-50%)
+            whileHover={{ scale: 1.2, y: "-50%" }}
             transition={{ type: "spring", stiffness: 300 }}
           >
             {showPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}
@@ -66,7 +121,10 @@ whileHover={{ scale: 1.2, y: "-50%" }} // giữ lại translateY(-50%)
 
         <motion.button
           type="submit"
-          whileHover={{ scale: 1.05, boxShadow: "0px 8px 20px rgba(0,123,255,0.3)" }}
+          whileHover={{
+            scale: 1.05,
+            boxShadow: "0px 8px 20px rgba(0,123,255,0.3)",
+          }}
           whileTap={{ scale: 0.97 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
