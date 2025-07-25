@@ -1,6 +1,31 @@
 @extends('layouts.layout')
 
 @section('content')
+<style>
+.admin-filter-form {
+        background: #f8f8f8;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .admin-filter-form label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 5px;
+        font-size: 14px;
+    }
+
+    .admin-filter-form input,
+    .admin-filter-form select {
+        padding: 8px 12px;
+        font-size: 14px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        width: 200px;
+    }
+
+</style>
 <div class="head-title">
     <div class="left">
         <h1>Tài khoản</h1>
@@ -19,7 +44,7 @@
     @endif
 <div class="body-content">
     {{-- Bộ lọc --}}
-    <form action="{{ route('admin.users.index') }}" method="GET" style="margin-bottom: 20px;">
+    <form action="{{ route('admin.users.index') }}" method="GET" style="margin-bottom: 20px;" class="admin-filter-form">
         <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: flex-end;">
             <div>
                 <label for="keyword">Tìm kiếm:</label>
