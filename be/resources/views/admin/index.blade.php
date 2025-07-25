@@ -126,17 +126,17 @@
 			</div>
 
 {{-- Biểu đồ thống kê --}}
-<h3 class="thongke left mt-5">📊 Thống Kê Doanh Thu & Đơn Hàng Theo Tháng</h3>
+{{-- <h3 class="thongke left mt-5">📊 Thống Kê Doanh Thu & Đơn Hàng Theo Tháng</h3>
 <div class="gant-chart" style="width:100%;max-width:1200px;margin:32px auto;">
     <canvas id="statChart"></canvas>
-</div>
+</div> --}}
 @endsection
 
 @section('scripts')
 {{-- Nhúng thư viện Chart.js nếu chưa có --}}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<script>
+{{-- <script>
     const ctx = document.getElementById('statChart').getContext('2d');
     const statChart = new Chart(ctx, {
         type: 'bar',
@@ -177,5 +177,5 @@
             }
         }
     });
-</script>
+</script> --}}
 @endsection

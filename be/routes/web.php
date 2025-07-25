@@ -22,6 +22,7 @@
     use App\Http\Controllers\Admin\PostCommentController;
     use App\Http\Controllers\Admin\ProductReviewController;
     use App\Http\Controllers\Admin\StatisticsController;
+    use Illuminate\Support\Facades\Redirect;
 
 
 
@@ -31,10 +32,8 @@
 
 
 
-
-    // Route::get('/', function () {
-    //     return view('welcome');
-    // });
+// Trang mặc định chuyển hướng đến /admin
+Route::redirect('/', '/admin');
 
     // ✅ Trang dashboard admin (hiển thị thống kê)
     Route::get('/admin', [DashboardController::class, 'index'])->name('admin.dashboard');
