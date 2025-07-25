@@ -45,7 +45,7 @@
         </div>
 
         <div class="form-actions">
-            <button type="submit">Thêm danh mục</button>
+            <button type="submit">Cập nhật danh mục</button>
         </div>
     </form>
 </div>

@@ -30,7 +30,7 @@
         </div>
 
         <div class="form-actions">
-            <button type="submit">Thêm</button>
+            <button type="submit">Thêm vai trò</button>
         </div>
     </form>
 </div>

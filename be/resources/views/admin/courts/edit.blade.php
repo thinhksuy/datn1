@@ -72,7 +72,7 @@
 
 
         <div class="form-actions">
-            <button type="submit" class="btn btn-save">Lưu thay đổi</button>
+            <button type="submit" class="btn btn-save">Cập nhật</button>
         </div>
     </form>
 </div>

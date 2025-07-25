@@ -29,7 +29,7 @@ class PostCategoryController extends Controller
         ]);
 
         PostCategory::create($validated);
-        return redirect()->route('admin.post_categories.index')->with('success', 'Created successfully');
+        return redirect()->route('admin.post_categories.index')->with('success', 'Tạo danh mục thành công');
     }
 
     public function show($id)
@@ -58,13 +58,13 @@ class PostCategoryController extends Controller
         $validated['Updated_at'] = now();
 
         $category->update($validated);
-        return redirect()->route('admin.post_categories.index')->with('success', 'Updated successfully');
+        return redirect()->route('admin.post_categories.index')->with('success', 'Cập nhật thành công');
     }
 
     public function destroy($id)
     {
         $category = PostCategory::findOrFail($id);
         $category->delete();
-        return redirect()->route('admin.post_categories.index')->with('success', 'Deleted successfully');
+        return redirect()->route('admin.post_categories.index')->with('success', 'Xóa thành công');
     }
 }

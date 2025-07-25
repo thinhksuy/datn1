@@ -81,7 +81,7 @@
             </div>
 
             <div class="form-actions">
-                <button type="submit">Lưu</button>
+                <button type="submit">Thêm bài viết</button>
             </div>
         </form>
     </div>
