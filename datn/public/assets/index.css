@@ -176,29 +176,29 @@ body {
   align-items: center;
 }
 
-.nav-menu ul li a,
-.nav-menu ul li Link {
+.nav-menu ul li a {
   color: white;
   text-decoration: none;
   font-weight: 600;
-  font-size: 18px;
+  font-size: 16px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  white-space: nowrap;
   transition: color 0.3s ease;
 }
 
-.nav-menu ul li a:hover,
-.nav-menu ul li Link:hover {
-  text-decoration: none;
+.nav-menu ul li a:hover {
+  color: #ccc;
 }
 
-.nav-menu ul li a i,
-.nav-menu ul li Link i {
+.nav-menu ul li i,
+.nav-menu ul li a i {
   color: white;
   font-size: 16px;
   vertical-align: middle;
 }
+
 
 /* Dropdown Mega Menu */
 .dropdown-wrapper {
@@ -208,15 +208,44 @@ body {
 .dropdown-mega {
   display: none;
   position: absolute;
-  top: 40px;
-  left: -311px;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
   width: 100vw;
   background-color: #ffffff;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   z-index: 999;
   padding: 30px 0;
   pointer-events: auto;
-  margin-top: -1px;
+}
+
+/* Dropdown Links */
+.dropdown-mega a {
+  display: block;
+  color: #333;
+  font-weight: 500;
+  padding: 4px 0;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.dropdown-mega a:hover {
+  color: #1e90ff; /* hoặc màu xanh bạn đang dùng */
+  text-decoration: underline;
+}
+
+/* Scrollbar Styling (optional, cho đẹp) */
+.dropdown-mega::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dropdown-mega::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.dropdown-mega::-webkit-scrollbar-thumb:hover {
+  background: #999;
 }
 
 .dropdown-wrapper:hover .dropdown-mega,

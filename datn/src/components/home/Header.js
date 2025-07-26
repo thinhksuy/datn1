@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-// import { motion } from "framer-motion";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -28,9 +27,19 @@ const containerMotion = {
   transition: { duration: 0.6, ease: "easeOut" },
 };
 
+const brandList = [
+  "Yonex", "Lining", "Victor", "Apacs", "Flypower", "Kawasaki", "Mizuno",
+  "FZ Forza", "Babolat", "RSL", "Fleet", "Gosen", "Wilson", "Prince",
+  "Head", "Yang Yang", "ProAce", "Carlton", "Talbot Torro", "Bonny",
+  "Ashaway", "Tronex"
+];
+
+
 const Header = () => {
   const [isFocused, setIsFocused] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
+  const [isProductOpen, setIsProductOpen] = useState(false);
+  const [isBrandOpen, setIsBrandOpen] = useState(false);
 
   const containerVariants = {
     hidden: {},
@@ -46,10 +55,7 @@ const Header = () => {
     visible: { opacity: 1, y: 0 },
   };
 
-  const [isProductOpen, setIsProductOpen] = useState(false);
-
   const mainMenuItems = [
-    { to: "/brand", icon: "fas fa-tag", label: "Thương Hiệu" },
     { to: "/promotions", icon: "fas fa-gift", label: "Khuyến Mãi" },
     { to: "/blog", icon: "fas fa-newspaper", label: "Blog" },
     { to: "/stores", icon: "fas fa-store", label: "Cửa hàng" },
@@ -405,8 +411,8 @@ const Header = () => {
                     exit="hidden"
                     style={{
                       position: "absolute",
-                      top: 43,
-                      left: -255,
+                      top: 50,
+                      left: -425,
                       background: "#fff",
                       border: "1px solid #ddd",
                       borderRadius: "8px",
@@ -431,6 +437,53 @@ const Header = () => {
                           </Link>
                         ))}
                       </div>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.li>
+
+            <motion.li
+              className="dropdown-wrapper"
+              onMouseEnter={() => setIsBrandOpen(true)}
+              onMouseLeave={() => setIsBrandOpen(false)}
+              whileHover={{ scale: 1.03 }}
+              style={{ borderRadius: 6, padding: "4px 8px", position: "relative" }}
+            >
+              <Link to="/brand">
+                <i className="fas fa-tag"></i> Thương Hiệu
+              </Link>
+
+              <AnimatePresence>
+                {isBrandOpen && (
+                  <motion.div
+                    className="dropdown-mega"
+                    variants={dropdownVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="hidden"
+                    style={{
+                      position: "absolute",
+                      top: 50,
+                      left: -425,
+                      background: "#fff",
+                      border: "1px solid #ddd",
+                      borderRadius: "8px",
+                      padding: 20,
+                      zIndex: 999,
+                      boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+                      display: "grid",
+                      gridTemplateColumns: "repeat(4, minmax(180px, 1fr))",
+                      gap: "16px",
+                      maxWidth: "1849px",
+                      maxHeight: "400px",
+                      overflowY: "auto",
+                    }}
+                  >
+                    {brandList.map((brand, idx) => (
+                      <Link key={idx} to={`/brand/${brand.toLowerCase()}`} className="hover:text-blue-500">
+                        {brand}
+                      </Link>
                     ))}
                   </motion.div>
                 )}
