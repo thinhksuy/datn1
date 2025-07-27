@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import axios from "axios";
@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 function RegisterForm() {
   const [formData, setFormData] = useState({
-    Role_ID: "",
+    Role_ID: "3", // Role mặc định, không hiển thị cho user
     Name: "",
     Email: "",
     Phone: "",
@@ -15,19 +15,8 @@ function RegisterForm() {
     ConfirmPassword: "",
   });
 
-  const [roles, setRoles] = useState([]);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:8000/api/roles")
-      .then((res) => setRoles(res.data))
-      .catch((err) => {
-        toast.error("Không lấy được danh sách vai trò");
-        console.error(err);
-      });
-  }, []);
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -48,8 +37,29 @@ function RegisterForm() {
       ConfirmPassword,
     } = formData;
 
-    if (!Role_ID) {
-      toast.error("❌ Vui lòng chọn vai trò trước khi đăng ký");
+    // Kiểm tra các trường bắt buộc
+    if (!Name.trim()) {
+      toast.error("❌ Vui lòng nhập họ và tên");
+      return;
+    }
+
+    if (!Email.trim()) {
+      toast.error("❌ Vui lòng nhập email");
+      return;
+    }
+
+    if (!Phone.trim()) {
+      toast.error("❌ Vui lòng nhập số điện thoại");
+      return;
+    }
+
+    if (!Password) {
+      toast.error("❌ Vui lòng nhập mật khẩu");
+      return;
+    }
+
+    if (!ConfirmPassword) {
+      toast.error("❌ Vui lòng nhập lại mật khẩu");
       return;
     }
 
@@ -72,9 +82,9 @@ function RegisterForm() {
         Address: null,
       });
 
-      toast.success(" Đăng ký thành công! Hãy đăng nhập");
+      toast.success("✅ Đăng ký thành công! Hãy đăng nhập");
       setFormData({
-        Role_ID: "",
+        Role_ID: "3",
         Name: "",
         Email: "",
         Phone: "",
@@ -107,23 +117,6 @@ function RegisterForm() {
         onSubmit={handleSubmit}
       >
         <h2>Đăng Ký</h2>
-
-        <motion.select
-          name="Role_ID"
-          value={formData.Role_ID}
-          onChange={handleChange}
-          whileFocus={{ scale: 1.01 }}
-          transition={{ type: "spring", stiffness: 300 }}
-          required
-          className="styled-select"
-        >
-          <option value="">-- Chọn vai trò --</option>
-          {roles.map((role) => (
-            <option key={role.Role_ID} value={role.Role_ID}>
-              {role.Name}
-            </option>
-          ))}
-        </motion.select>
 
         <motion.input
           type="text"
