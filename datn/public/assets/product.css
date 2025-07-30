@@ -439,6 +439,45 @@ input[type="checkbox"] {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
+/*hover vào sp ra giỏ hàng*/
+/* Đảm bảo nút giỏ hàng nằm giữa ảnh và hiển thị rõ ràng */
+.cart-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+}
+
+/* Khi hover vào .product-content thì hiện nút lên */
+.product-content:hover .cart-overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Nút giỏ hàng */
+.cart-center-btn {
+  background-color: rgba(255, 255, 255, 0.9);
+  border: none;
+  padding: 10px 14px;
+  font-size: 18px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+/* Hover nút */
+.cart-center-btn:hover {
+  background-color: #003087;
+  color: white;
+  transform: scale(1.1);
+}
+
+
 
 /* Hình ảnh */
 .product-image1 {
