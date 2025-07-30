@@ -26,6 +26,7 @@ body {
   justify-content: center;
   background-color: #fff;
   padding: 0;
+  gap: 100px;
 }
 
 .container {
@@ -356,7 +357,9 @@ body {
   cursor: pointer;
   display: flex;
   font-size: 16px;
-  margin-top: 10px;
+  /* margin-top: 10px; */
+  justify-content: center;
+  align-items: center;
 }
 
 /* BANENR */
