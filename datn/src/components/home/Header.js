@@ -355,7 +355,8 @@ const Header = () => {
                 </motion.div>
 
                 {/* GIỎ HÀNG */}
-                <motion.div
+                <Link to="/cart">
+                    <motion.div
                   className="icon-item cart"
                   whileHover={{ scale: 1.1, rotate: 2 }}
                   whileTap={{ scale: 0.95 }}
@@ -376,6 +377,7 @@ const Header = () => {
                   <span className="cart-count">0</span>
                   <span>GIỎ HÀNG</span>
                 </motion.div>
+                </Link>
               </motion.div>
             </motion.div>
           </motion.div>
@@ -397,7 +399,7 @@ const Header = () => {
                 position: "relative",
               }}
             >
-              <Link to="/product">
+              <Link to="/productde">
                 <i className="fas fa-cart-shopping"></i> Sản phẩm
               </Link>
 
