@@ -39,7 +39,7 @@
                 <th>Đơn hàng</th>
                 <th>Bình luận</th>
                 <th>Hình ảnh</th>
-                <th>Trạng thái</th>
+                {{-- <th>Trạng thái</th> --}}
                 <th>Thao tác</th>
             </tr>
         </thead>
@@ -59,7 +59,7 @@
                             Không có
                         @endif
                     </td>
-                    <td class="select-status">
+                    {{-- <td class="select-status">
                         <form action="{{ route('admin.comments.product.toggleStatus', $review->Product_review_ID) }}" method="POST">
                             @csrf
                             @method('PATCH')
@@ -71,7 +71,7 @@
                                 <option value="0" {{ !$review->Status ? 'selected' : '' }}>Ẩn</option>
                             </select>
                         </form>
-                    </td>
+                    </td> --}}
 
 
 

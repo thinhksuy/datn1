@@ -78,7 +78,7 @@ class OrderController extends Controller
     $order->payment_method   = $validated['payment_method'];
     $order->shiping_fee      = $validated['shiping_fee'] ?? 0;
     $order->status           = $validated['status'];
-    $order->status_method    = $validated['status_method'];
+    // $order->status_method    = $validated['status_method'];
     $order->updated_at       = now();
 
     $order->save();

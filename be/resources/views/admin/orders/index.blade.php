@@ -3,23 +3,23 @@
 
 @section('content')
 <style>
-form {
+.admin-form-loc-order {
     background-color: #f9f9f9;
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-form label {
+.admin-form-loc-order label {
     display: block;
     margin-bottom: 6px;
     font-weight: 500;
     color: #333;
 }
 
-form input[type="text"],
-form input[type="date"],
-form select {
+.admin-form-loc-order input[type="text"],
+.admin-form-loc-order input[type="date"],
+.admin-form-loc-order select {
     width: 180px;
     padding: 8px 10px;
     border: 1px solid #ccc;
@@ -29,9 +29,9 @@ form select {
     transition: border 0.2s;
 }
 
-form input[type="text"]:focus,
-form input[type="date"]:focus,
-form select:focus {
+.admin-form-loc-order input[type="text"]:focus,
+.admin-form-loc-order input[type="date"]:focus,
+.admin-form-loc-order select:focus {
     border-color: #3b82f6;
     outline: none;
 }
@@ -55,7 +55,7 @@ form select:focus {
     <!-- =========================
      Bộ lọc đơn hàng
 ============================ -->
-<form action="{{ route('admin.orders.index') }}" method="GET" style="margin-bottom: 20px;">
+<form action="{{ route('admin.orders.index') }}" method="GET" style="margin-bottom: 20px;" class="admin-form-loc-order">
     <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: flex-end;">
         <div>
             <label for="order_code">Mã đơn:</label>
@@ -131,7 +131,7 @@ form select:focus {
                         <a href="{{ route('admin.orders.show', $order->order_id) }}" style="display:block; width:100%; height:100%; color:inherit; text-decoration:none;">Xem</a>
                     </button>
 
-                    @if ($order->status !== 'cancelled')
+                    @if ($order->status !== 'cancelled' && $order->status !== 'completed')
                     <!-- Nút Sửa -->
                     <button class="admin-button-table">
                         <a href="{{ route('admin.orders.edit', $order->order_id) }}" style="display:block; width:100%; height:100%; color:inherit; text-decoration:none;">Sửa</a>

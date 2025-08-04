@@ -80,20 +80,23 @@ class DashboardController extends Controller
     $totalCourtBookings = DB::table('court_booking')->count();
 
     // Đơn hàng gần đây (5 đơn mới nhất)
-    $recentOrders = DB::table('orders')
-        ->join('user', 'orders.user_id', '=', 'user.id')
-        ->select('orders.*', 'user.name as user_name')
-        ->orderByDesc('orders.created_at')
-        ->limit(5)
-        ->get();
+   $recentOrders = DB::table('orders')
+    ->join('user', 'orders.user_id', '=', 'user.id')
+    ->select('orders.*', 'user.name as user_name', 'user.Avatar') // <- CHÍNH XÁC
+    ->orderByDesc('orders.created_at')
+    ->limit(5)
+    ->get();
+
+
 
     // Lịch đặt sân gần đây (5 lịch mới nhất)
     $recentBookings = DB::table('court_booking')
-        ->join('user', 'court_booking.user_id', '=', 'user.id')
-        ->select('court_booking.*', 'user.name as user_name')
-        ->orderByDesc('court_booking.created_at')
-        ->limit(5)
-        ->get();
+    ->join('user', 'court_booking.user_id', '=', 'user.id')
+    ->select('court_booking.*', 'user.name as user_name', 'user.Avatar') // Thêm avatar
+    ->orderByDesc('court_booking.created_at')
+    ->limit(5)
+    ->get();
+
 
 
             return view('admin.index', compact(

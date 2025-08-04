@@ -67,9 +67,12 @@
                             @foreach($recentOrders as $order)
                             <tr>
                                 <td>
-                                    <img src="{{ asset('img/people.png') }}">
+                                    <img src="{{ asset('uploads/users/' . $order->Avatar) }}"
+                                        style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
                                     <p>{{ $order->user_name }}</p>
                                 </td>
+
+
                                 <td>{{ \Carbon\Carbon::parse($order->created_at)->format('d-m-Y') }}</td>
                                 <td>{{ number_format($order->total_amount, 0, ',', '.') }}đ</td>
                                 <td>
@@ -109,9 +112,11 @@
                             @foreach($recentBookings as $booking)
                             <tr>
                                 <td>
-                                    <img src="{{ asset('img/people.png') }}">
+                                    <img src="{{ asset('uploads/users/' . $booking->Avatar) }}"
+                                        style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
                                     <p>{{ $booking->user_name }}</p>
                                 </td>
+
                                 <td>{{ \Carbon\Carbon::parse($booking->created_at)->format('d-m-Y') }}</td>
                                 <td>{{ $booking->Start_time }}</td>
                                 <td>{{ $booking->End_time }}</td>

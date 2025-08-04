@@ -55,19 +55,42 @@
             <input type="number" name="shiping_fee" id="shiping_fee" value="{{ old('shiping_fee', $order->shiping_fee) }}" min="0">
         </div>
 
-        <div class="form-group">
-            <label for="status">Trạng thái:</label>
-            <select name="status" id="status" required>
-                @foreach (['pending' => 'Chờ xử lý', 'shipping' => 'Đang giao', 'completed' => 'Hoàn thành', 'cancelled' => 'Đã hủy'] as $key => $label)
-                    <option value="{{ $key }}" {{ $order->status == $key ? 'selected' : '' }}>{{ $label }}</option>
-                @endforeach
-            </select>
-        </div>
+        @php
+    $statusOptions = [];
 
-        <div class="form-group">
+    if ($order->status === 'pending') {
+        $statusOptions = [
+            'shipping' => 'Đang giao',
+            'cancelled' => 'Đã hủy',
+        ];
+    } elseif ($order->status === 'shipping') {
+        $statusOptions = [
+            'completed' => 'Hoàn thành',
+        ];
+    }
+@endphp
+
+@if (!empty($statusOptions))
+    <div class="form-group">
+        <label for="status">Trạng thái:</label>
+        <select name="status" id="status" required>
+            @foreach ($statusOptions as $key => $label)
+                <option value="{{ $key }}" {{ $order->status == $key ? 'selected' : '' }}>{{ $label }}</option>
+            @endforeach
+        </select>
+    </div>
+@else
+    <div class="form-group">
+        <label>Trạng thái:</label>
+        <p><strong>{{ ['pending' => 'Chờ xử lý', 'shipping' => 'Đang giao', 'completed' => 'Hoàn thành', 'cancelled' => 'Đã hủy'][$order->status] }}</strong></p>
+    </div>
+@endif
+
+
+        {{-- <div class="form-group">
             <label for="status_method">Tình trạng xử lý:</label>
             <input type="text" name="status_method" id="status_method" value="{{ old('status_method', $order->status_method) }}">
-        </div>
+        </div> --}}
 
         <div class="form-actions">
             <button type="submit">Cập nhật</button>

@@ -35,8 +35,8 @@
         <thead>
             <tr>
                 <th>STT</th>
-                <th>Trạng thái</th>
-                <th>Người bình luận</th>
+                {{-- <th>Trạng thái</th> --}}
+                <th>Người dùng</th>
                 <th>Nội dung</th>
                 <th>Bài viết</th>
                 <th>Thao tác</th>
@@ -46,7 +46,7 @@
 @foreach($comments as $index => $comment)
     <tr>
         <td>{{ $index + 1 }}</td>
-        <td class="select-status">
+        {{-- <td class="select-status">
             <form action="{{ route('admin.comments.post.updateStatus', $comment->Comment_ID) }}" method="POST">
 
                 @csrf
@@ -56,7 +56,7 @@
                     <option value="1" {{ $comment->Status ? 'selected' : '' }}>Đã duyệt</option>
                 </select>
             </form>
-        </td>
+        </td> --}}
 
 
         <td>{{ $comment->user->Name ?? 'Không xác định' }}</td>
