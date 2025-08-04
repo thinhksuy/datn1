@@ -304,7 +304,7 @@ const Header = () => {
                   className="icon-item"
                   onMouseEnter={() => setIsUserDropdownOpen(true)}
                   onMouseLeave={() => setIsUserDropdownOpen(false)}
-                  style={{ position: "relative" }}
+                  style={{ position: "relative", display: "flex", alignItems: "center", cursor: "pointer" }}
                   whileHover={{ scale: 1.1, rotate: 2 }}
                   whileTap={{ scale: 0.95 }}
                   variants={{
@@ -313,45 +313,162 @@ const Header = () => {
                   }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
-                  <motion.i
-                    className="fas fa-user"
-                    whileHover={{
-                      backgroundColor: "#0154b9",
-                      color: "#fff",
-                    }}
-                    transition={{ duration: 0.3 }}
-                  />
-                  <span>TÀI KHOẢN</span>
-
-                  <AnimatePresence>
-                    {isUserDropdownOpen && (
-                      <motion.div
-                        className="user-dropdown"
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.2 }}
-                        style={{
-                          position: "absolute",
-                          top: "120%",
-                          right: 0,
-                          background: "#fff",
-                          border: "1px solid #ccc",
-                          borderRadius: "8px",
-                          padding: "10px 16px",
-                          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                          zIndex: 10,
-                          display: "flex",
-                          flexDirection: "column",
-                          gap: "8px",
-                          minWidth: "140px",
-                        }}
-                      >
-                        <Link to="/login">Đăng nhập</Link>
-                        <Link to="/register">Đăng ký</Link>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                  {(() => {
+                    const userStr = localStorage.getItem("user");
+                    if (!userStr) {
+                      return (
+                        <>
+                          <motion.i
+                            className="fas fa-user"
+                            whileHover={{
+                              backgroundColor: "#0154b9",
+                              color: "#fff",
+                            }}
+                            transition={{ duration: 0.3 }}
+                          />
+                          <span>TÀI KHOẢN</span>
+                          <AnimatePresence>
+                            {isUserDropdownOpen && (
+                              <motion.div
+                                className="user-dropdown"
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                transition={{ duration: 0.2 }}
+                                style={{
+                                  position: "absolute",
+                                  top: "120%",
+                                  right: 0,
+                                  background: "#fff",
+                                  border: "1px solid #ccc",
+                                  borderRadius: "8px",
+                                  padding: "10px 16px",
+                                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                                  zIndex: 10,
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  gap: "8px",
+                                  minWidth: "140px",
+                                }}
+                              >
+                                <Link to="/login">Đăng nhập</Link>
+                                <Link to="/register">Đăng ký</Link>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </>
+                      );
+                    }
+                    try {
+                      const user = JSON.parse(userStr);
+                      return (
+                        <>
+                          <img
+                            src={user.avatar || "/img/default-avatar.png"}
+                            alt="Avatar"
+                            style={{
+                              width: 30,
+                              height: 30,
+                              borderRadius: "50%",
+                              objectFit: "cover",
+                              marginRight: 8,
+                              verticalAlign: "middle",
+                            }}
+                          />
+                          <span>{user.name || "User"}</span>
+                          <AnimatePresence>
+                            {isUserDropdownOpen && (
+                              <motion.div
+                                className="user-dropdown"
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                transition={{ duration: 0.2 }}
+                                style={{
+                                  position: "absolute",
+                                  top: "120%",
+                                  right: 0,
+                                  background: "#fff",
+                                  border: "1px solid #ccc",
+                                  borderRadius: "8px",
+                                  padding: "10px 16px",
+                                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                                  zIndex: 10,
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  gap: "8px",
+                                  minWidth: "140px",
+                                }}
+                              >
+                                <Link to="/profile">Trang cá nhân</Link>
+                                <button
+                                  onClick={() => {
+                                    localStorage.removeItem("token");
+                                    localStorage.removeItem("user");
+                                    window.location.href = "/login";
+                                  }}
+                                  style={{
+                                    background: "none",
+                                    border: "none",
+                                    padding: 0,
+                                    margin: 0,
+                                    color: "#007bff",
+                                    cursor: "pointer",
+                                    textAlign: "left",
+                                  }}
+                                >
+                                  Đăng xuất
+                                </button>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </>
+                      );
+                    } catch {
+                      return (
+                        <>
+                          <motion.i
+                            className="fas fa-user"
+                            whileHover={{
+                              backgroundColor: "#0154b9",
+                              color: "#fff",
+                            }}
+                            transition={{ duration: 0.3 }}
+                          />
+                          <span>TÀI KHOẢN</span>
+                          <AnimatePresence>
+                            {isUserDropdownOpen && (
+                              <motion.div
+                                className="user-dropdown"
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                transition={{ duration: 0.2 }}
+                                style={{
+                                  position: "absolute",
+                                  top: "120%",
+                                  right: 0,
+                                  background: "#fff",
+                                  border: "1px solid #ccc",
+                                  borderRadius: "8px",
+                                  padding: "10px 16px",
+                                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                                  zIndex: 10,
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  gap: "8px",
+                                  minWidth: "140px",
+                                }}
+                              >
+                                <Link to="/login">Đăng nhập</Link>
+                                <Link to="/register">Đăng ký</Link>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </>
+                      );
+                    }
+                  })()}
                 </motion.div>
 
                 {/* GIỎ HÀNG */}
