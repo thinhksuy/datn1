@@ -77,16 +77,18 @@ class PostController extends Controller
             'View' => 'nullable|integer',
         ]);
 
-        if ($request->hasFile('Thumbnail')) {
-            $image = $request->file('Thumbnail');
+                if ($request->hasFile('Thumbnail_upload')) {
+            if ($post->Thumbnail && file_exists(public_path($post->Thumbnail))) {
+                unlink(public_path($post->Thumbnail));
+            }
+
+            $image = $request->file('Thumbnail_upload');
             $imageName = time() . '_' . $image->getClientOriginalName();
             $image->move(public_path('uploads/posts'), $imageName);
             $validated['Thumbnail'] = 'uploads/posts/' . $imageName;
         }
 
 
-
-        $validated['Updated_at'] = now();
 
         $post->update($validated);
         return redirect()->route('admin.posts.index')->with('success', 'Cập nhật bài viết thành công!');
