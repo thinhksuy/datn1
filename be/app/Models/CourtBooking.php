@@ -32,7 +32,7 @@ class CourtBooking extends Model
     // Quan hệ: đặt sân thuộc về người dùng
     public function user()
 {
-    return $this->belongsTo(User::class, 'User_ID');
+    return $this->belongsTo(User::class, 'User_ID', 'ID');
 }
 
 
@@ -48,5 +48,5 @@ class CourtBooking extends Model
         return $this->belongsTo(Voucher::class, 'Vouchers_ID', 'Vouchers_ID');
     }
 
-    
+
 }

@@ -43,7 +43,7 @@
             @forelse ($bookings as $index => $booking)
                 <tr>
                     <td>{{ $index + 1 }}</td>
-                    <td>{{ $booking->user->name ?? $booking->customer_name }}</td>
+                    <td>{{ $booking->user->Name ?? $booking->customer_name }}</td>
                     <td>{{ $booking->court->Name ?? 'Không rõ' }}</td>
                     <td>{{ $booking->Booking_date }}</td>
                     <td>{{ $booking->Start_time }} - {{ $booking->End_time }}</td>

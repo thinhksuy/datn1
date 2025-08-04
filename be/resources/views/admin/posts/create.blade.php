@@ -1,7 +1,6 @@
 @extends('layouts.layout')
 
 @section('content')
-<main>
     <div class="head-title">
         <div class="left">
             <h1>Thêm Bài Viết</h1>
@@ -85,5 +84,4 @@
             </div>
         </form>
     </div>
-</main>
 @endsection
