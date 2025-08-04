@@ -30,7 +30,7 @@ $bookings = CourtBooking::with(['court', 'user'])->latest()->paginate(10);
 {
     $request->validate([
         'customer_name'   => 'required|string|max:100',
-        'user_id'         => 'nullable|exists:users,id',
+        'user_id' => 'nullable|exists:user,ID',
         'courts_id'       => 'required|exists:courts,Courts_ID',
         'booking_date'    => 'required|date|after_or_equal:today',
         'start_time'      => 'required|date_format:H:i',
@@ -87,7 +87,7 @@ $total = $duration * $request->price_per_hour;
 
         $request->validate([
             'customer_name'   => 'required|string|max:100',
-            'user_id'         => 'nullable|exists:users,id',
+            'user_id' => 'nullable|exists:user,ID',
             'courts_id'       => 'required|exists:courts,Courts_ID',
             'booking_date'    => 'required|date',
             'start_time'      => 'required|date_format:H:i',
