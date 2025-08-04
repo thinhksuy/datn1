@@ -37,6 +37,8 @@ export default function BookingPage() {
     return `${yyyy}-${mm}-${dd}`;
   });
   const [activeTab, setActiveTab] = useState('morning');
+  const [selectedSlots, setSelectedSlots] = useState([]);
+  const [selectedCourt, setSelectedCourt] = useState(null);
   const [user] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem('user'));
@@ -94,56 +96,174 @@ export default function BookingPage() {
     );
   };
 
-  const handleBooking = async (courtId, time) => {
+  const handleSlotSelection = (courtId, time) => {
+    if (!user) {
+      alert('Vui lòng đăng nhập để đặt sân!');
+      navigate('/login');
+      return;
+    }
+    const slotKey = `${courtId}-${time}`;
+    const isSelected = selectedSlots.includes(slotKey);
+    
+    if (isSelected) {
+      setSelectedSlots(prev => prev.filter(slot => slot !== slotKey));
+    } else {
+      // Check if this slot is consecutive with existing selections
+      const existingSlots = selectedSlots.filter(slot => slot.startsWith(courtId));
+      if (existingSlots.length === 0) {
+        setSelectedSlots(prev => [...prev, slotKey]);
+      } else {
+        // Check if this slot is adjacent to existing selections
+        const existingTimes = existingSlots.map(slot => slot.split('-')[1]);
+        const isAdjacent = existingTimes.some(existingTime => {
+          const [h1, m1] = existingTime.split(':').map(Number);
+          const [h2, m2] = time.split(':').map(Number);
+          const diff = (h2 * 60 + m2) - (h1 * 60 + m1);
+          return Math.abs(diff) === 60;
+        });
+        
+        if (isAdjacent || existingSlots.length === 0) {
+          setSelectedSlots(prev => [...prev, slotKey]);
+        }
+      }
+    }
+  };
+
+  const handleBookSelectedSlots = async () => {
     if (!user) {
       alert('Vui lòng đăng nhập để đặt sân!');
       navigate('/login');
       return;
     }
 
-    const [h1, m1] = time.split(':').map(Number);
-    const [h2, m2] = addOneHour(time).split(':').map(Number);
-    const duration = (h2 + m2 / 60) - (h1 + m1 / 60);
-    const court = courts.find(c => c.Courts_ID === courtId);
-    const pricePerHour = court ? court.Price_per_hour : 0;
-    const totalPrice = duration * pricePerHour;
+    if (selectedSlots.length === 0) {
+      alert('Vui lòng chọn ít nhất một khung giờ!');
+      return;
+    }
 
-    console.log('Booking user:', user);
-    const payload = {
-      Courts_ID: courtId,
-      User_ID: user.ID || user.id,
-      Booking_date: selectedDate,
-      Start_time: time + ':00',
-      End_time: addOneHour(time) + ':00',
-      Duration_hours: Math.ceil(duration),
-      Price_per_hour: pricePerHour,
-      Total_price: totalPrice,
-      Status: 'pending'
-    };
+    if (!selectedCourt) {
+      alert('Vui lòng chọn sân cần đặt!');
+      return;
+    }
+
+    // Group slots by court
+    const slotsByCourt = {};
+    selectedSlots.forEach(slot => {
+      const [courtId, time] = slot.split('-');
+      if (!slotsByCourt[courtId]) {
+        slotsByCourt[courtId] = [];
+      }
+      slotsByCourt[courtId].push(time);
+    });
+
+    // Sort times for each court
+    Object.keys(slotsByCourt).forEach(courtId => {
+      slotsByCourt[courtId].sort();
+    });
+
+    // Create booking for each court
+    const bookings = [];
+    for (const courtId in slotsByCourt) {
+      const times = slotsByCourt[courtId];
+      const startTime = times[0];
+      const endTime = addOneHour(times[times.length - 1]);
+      
+      const [h1, m1] = startTime.split(':').map(Number);
+      const [h2, m2] = endTime.split(':').map(Number);
+      const duration = (h2 + m2 / 60) - (h1 + m1 / 60);
+      
+      const court = courts.find(c => c.Courts_ID === parseInt(courtId));
+      const pricePerHour = court ? court.Price_per_hour : 0;
+      const totalPrice = duration * pricePerHour;
+
+      bookings.push({
+        Courts_ID: parseInt(courtId),
+        User_ID: user.ID || user.id,
+        Booking_date: selectedDate,
+        Start_time: startTime + ':00',
+        End_time: endTime + ':00',
+        Duration_hours: Math.ceil(duration),
+        Price_per_hour: pricePerHour,
+        Total_price: totalPrice,
+        Status: true
+      });
+    }
 
     try {
+      // Save booking data to localStorage with timestamp for 30 minutes expiry
+      const bookingData = {
+        bookings,
+        totalAmount: bookings.reduce((sum, b) => sum + b.Total_price, 0),
+        timestamp: Date.now()
+      };
+      localStorage.setItem('pendingBooking', JSON.stringify(bookingData));
+
       const token = localStorage.getItem('auth_token');
-      await axios.post('/api/court_bookings', payload, {
-        headers: {
-          Authorization: token ? `Bearer ${token}` : ''
-        }
-      });
-      alert('Đặt sân thành công!');
+      
+      // Create all bookings
+      for (const booking of bookings) {
+        await axios.post('/api/court_bookings', booking, {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : ''
+          }
+        });
+      }
+      
+      alert(`Đặt ${bookings.length} khung giờ thành công!`);
+      setSelectedSlots([]);
+      setSelectedCourt(null);
       fetchBookings();
+      
+      // Redirect to payment page
+      navigate('/payment', { 
+        state: { 
+          bookings: bookings,
+          totalAmount: bookings.reduce((sum, b) => sum + b.Total_price, 0)
+        } 
+      });
+      
     } catch (error) {
       console.error('Booking error:', error.response || error.message || error);
       const backendMessage = error.response?.data?.message || 'Đặt sân thất bại!';
-      // Translate common backend validation messages to Vietnamese
-      let message = backendMessage;
-      if (backendMessage.includes('The status field must be true or false')) {
-        message = 'Trường trạng thái phải là true hoặc false.';
-      } else if (backendMessage.includes('The start time field must match the format')) {
-        message = 'Trường thời gian bắt đầu phải đúng định dạng HH:mm:ss.';
-      } else if (backendMessage.includes('The user id field is required')) {
-        message = 'Trường ID người dùng là bắt buộc.';
-      }
-      alert(message);
+      alert(backendMessage);
     }
+  };
+
+  const getSelectedSlotsForCourt = (courtId) => {
+    if (!courtId) return [];
+    return selectedSlots
+      .filter(slot => slot.startsWith(courtId.toString()))
+      .map(slot => slot.split('-')[1])
+      .sort();
+  };
+
+  const calculateTotalPrice = () => {
+    let total = 0;
+    const slotsByCourt = {};
+    
+    selectedSlots.forEach(slot => {
+      const [courtId, time] = slot.split('-');
+      if (!slotsByCourt[courtId]) {
+        slotsByCourt[courtId] = [];
+      }
+      slotsByCourt[courtId].push(time);
+    });
+    
+    Object.keys(slotsByCourt).forEach(courtId => {
+      const times = slotsByCourt[courtId].sort();
+      const startTime = times[0];
+      const endTime = addOneHour(times[times.length - 1]);
+      
+      const [h1, m1] = startTime.split(':').map(Number);
+      const [h2, m2] = endTime.split(':').map(Number);
+      const duration = (h2 + m2 / 60) - (h1 + m1 / 60);
+      
+      const court = courts.find(c => c.Courts_ID === parseInt(courtId));
+      const pricePerHour = court ? court.Price_per_hour : 0;
+      total += duration * pricePerHour;
+    });
+    
+    return total;
   };
 
   return (
@@ -286,6 +406,12 @@ export default function BookingPage() {
                 color: '#4b5563',
                 fontWeight: '600'
               }}><strong>Vị trí:</strong> {court.Location}</p>
+              <p style={{
+                marginBottom: '16px',
+                fontSize: '1.125rem',
+                color: '#059669',
+                fontWeight: '700'
+              }}><strong>Giá:</strong> {court.Price_per_hour?.toLocaleString()}đ/giờ</p>
               <div style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(5, minmax(0, 1fr))',
@@ -293,29 +419,36 @@ export default function BookingPage() {
               }}>
                 {TIME_SLOTS[activeTab].map((time) => {
                   const booked = isSlotBooked(court.Courts_ID, time);
+                  const slotKey = `${court.Courts_ID}-${time}`;
+                  const isSelected = selectedSlots.includes(slotKey);
+                  
                   return (
                     <button
                       key={time}
                       disabled={booked}
-                      onClick={() => handleBooking(court.Courts_ID, time)}
+                      onClick={() => {
+                        setSelectedCourt(court);
+                        handleSlotSelection(court.Courts_ID, time);
+                      }}
                       style={{
                         borderRadius: '8px',
                         border: '1px solid',
-                        borderColor: booked ? '#dc2626' : '#22c55e',
+                        borderColor: booked ? '#dc2626' : isSelected ? '#2563eb' : '#22c55e',
                         padding: '10px 12px',
                         fontSize: '0.875rem',
                         fontWeight: '600',
-                        color: booked ? '#fff' : '#fff',
-                        backgroundColor: booked ? '#dc2626' : '#22c55e',
+                        color: '#fff',
+                        backgroundColor: booked ? '#dc2626' : isSelected ? '#2563eb' : '#22c55e',
                         cursor: booked ? 'not-allowed' : 'pointer',
                         transition: 'background-color 0.3s ease',
-                        userSelect: 'none'
+                        userSelect: 'none',
+                        boxShadow: isSelected ? '0 0 0 2px #3b82f6' : 'none'
                       }}
                       onMouseEnter={e => {
-                        if (!booked) e.target.style.backgroundColor = '#16a34a';
+                        if (!booked && !isSelected) e.target.style.backgroundColor = '#16a34a';
                       }}
                       onMouseLeave={e => {
-                        if (!booked) e.target.style.backgroundColor = '#22c55e';
+                        if (!booked && !isSelected) e.target.style.backgroundColor = '#22c55e';
                       }}
                     >
                       {time} - {addOneHour(time)}
@@ -326,6 +459,55 @@ export default function BookingPage() {
             </div>
           ))
         )}
+
+        {selectedSlots.length > 0 && (
+          <div style={{
+            position: 'fixed',
+            bottom: '20px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            backgroundColor: '#2563eb',
+            color: '#fff',
+            padding: '16px 24px',
+            borderRadius: '12px',
+            boxShadow: '0 4px 12px rgba(37, 99, 235, 0.6)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '16px',
+            zIndex: 1000,
+            maxWidth: '90%',
+            width: '600px',
+            justifyContent: 'space-between'
+          }}>
+            <div>
+              <strong>Đã chọn:</strong> {selectedSlots.length} khung giờ - Tổng giá: {calculateTotalPrice().toLocaleString()}đ
+            </div>
+        <button
+          onClick={handleBookSelectedSlots}
+          disabled={!user}
+          title={!user ? 'Vui lòng đăng nhập để đặt sân' : ''}
+          style={{
+            backgroundColor: !user ? '#9ca3af' : '#10b981',
+            border: 'none',
+            borderRadius: '8px',
+            padding: '12px 24px',
+            fontWeight: '700',
+            fontSize: '1rem',
+            color: '#fff',
+            cursor: !user ? 'not-allowed' : 'pointer',
+            transition: 'background-color 0.3s ease'
+          }}
+          onMouseEnter={e => {
+            if (user) e.currentTarget.style.backgroundColor = '#059669';
+          }}
+          onMouseLeave={e => {
+            if (user) e.currentTarget.style.backgroundColor = '#10b981';
+          }}
+        >
+          Đặt sân
+        </button>
+      </div>
+    )}
       </main>
       <Footer />
     </>

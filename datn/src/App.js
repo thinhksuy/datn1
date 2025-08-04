@@ -10,6 +10,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import BookingPage from "./pages/BookingPage";
 import CourtDetailPage from "./pages/CourtDetailPage";
+import UserProfile from "./pages/UserProfile";
 
 function App() {
   return (
@@ -24,10 +25,9 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/booking" element={<BookingPage />} />
         <Route path="/courts" element={<CourtDetailPage />} />
-    
+        <Route path="/profile" element={<UserProfile />} />
       </Routes>
     </Router>
-    
   );
 }
 
