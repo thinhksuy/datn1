@@ -56,12 +56,12 @@
                 <span class="text">Thêm sản phẩm</span>
             </a>
         </li>
-		<li>
+		{{-- <li>
             <a href="{{ route('admin.category-attribute.create') }}"  class="{{ request()->routeIs('admin.category-attribute.create') ? 'active1' : '' }}">
                 <i class='bx bx-link'></i>
                 <span class="text">Gán thuộc tính danh mục</span>
             </a>
-        </li>
+        </li> --}}
 
     </ul>
 </li>
