@@ -9,9 +9,33 @@ use App\Models\Court;
 class CourtApi extends Controller
 {
     // GET /api/courts
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Court::all(), 200);
+        $date = $request->query('date');
+        $start_time = $request->query('start_time');
+        $end_time = $request->query('end_time');
+
+        if (!$date || !$start_time || !$end_time) {
+            return response()->json(['error' => 'Missing required parameters'], 400);
+        }
+
+        // Get courts booked in the given time range
+        $bookedCourtIds = \App\Models\CourtBooking::where('Booking_date', $date)
+            ->where(function ($query) use ($start_time, $end_time) {
+                $query->whereBetween('Start_time', [$start_time, $end_time])
+                      ->orWhereBetween('End_time', [$start_time, $end_time])
+                      ->orWhere(function ($query) use ($start_time, $end_time) {
+                          $query->where('Start_time', '<=', $start_time)
+                                ->where('End_time', '>=', $end_time);
+                      });
+            })
+            ->pluck('Courts_ID')
+            ->toArray();
+
+        // Return courts not booked in that time range
+        $availableCourts = Court::whereNotIn('id', $bookedCourtIds)->get();
+
+        return response()->json(['data' => $availableCourts], 200);
     }
 
     // POST /api/courts
