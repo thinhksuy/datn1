@@ -411,10 +411,19 @@ const Header = () => {
                                     background: "none",
                                     border: "none",
                                     padding: 0,
-                                    margin: 0,
+                                    padding: "8px 12px",
+                                    margin: "4px 0",
                                     color: "#007bff",
                                     cursor: "pointer",
                                     textAlign: "left",
+                                    borderRadius: "6px",
+                                    transition: "background-color 0.3s ease",
+                                  }}
+                                  onMouseEnter={e => {
+                                    e.currentTarget.style.backgroundColor = "#e0e7ff";
+                                  }}
+                                  onMouseLeave={e => {
+                                    e.currentTarget.style.backgroundColor = "transparent";
                                   }}
                                 >
                                   Đăng xuất
@@ -564,50 +573,13 @@ const Header = () => {
 
             <motion.li
               className="dropdown-wrapper"
-              onMouseEnter={() => setIsBrandOpen(true)}
-              onMouseLeave={() => setIsBrandOpen(false)}
               whileHover={{ scale: 1.03 }}
               style={{ borderRadius: 6, padding: "4px 8px", position: "relative" }}
             >
-              <Link to="/brand">
-                <i className="fas fa-tag"></i> Thương Hiệu
+              <Link to="/booking" style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                <i className="fas fa-tag"></i> Đặt Sân
               </Link>
-
-              <AnimatePresence>
-                {isBrandOpen && (
-                  <motion.div
-                    className="dropdown-mega"
-                    variants={dropdownVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="hidden"
-                    style={{
-                      position: "absolute",
-                      top: 50,
-                      left: -425,
-                      background: "#fff",
-                      border: "1px solid #ddd",
-                      borderRadius: "8px",
-                      padding: 20,
-                      zIndex: 999,
-                      boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
-                      display: "grid",
-                      gridTemplateColumns: "repeat(4, minmax(180px, 1fr))",
-                      gap: "16px",
-                      maxWidth: "1849px",
-                      maxHeight: "400px",
-                      overflowY: "auto",
-                    }}
-                  >
-                    {brandList.map((brand, idx) => (
-                      <Link key={idx} to={`/brand/${brand.toLowerCase()}`} className="hover:text-blue-500">
-                        {brand}
-                      </Link>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.li>
+              </motion.li>
 
             {mainMenuItems.map((item, index) => (
               <motion.li

@@ -30,13 +30,32 @@ export default function BookingPage() {
   const [courts, setCourts] = useState([]);
   const [bookings, setBookings] = useState([]);
   const [selectedDate, setSelectedDate] = useState(() => {
-    const today = new Date();
-    const yyyy = today.getFullYear();
-    const mm = (today.getMonth() + 1).toString().padStart(2, '0');
-    const dd = today.getDate().toString().padStart(2, '0');
+    const now = new Date();
+    const yyyy = now.getFullYear();
+    const mm = (now.getMonth() + 1).toString().padStart(2, '0');
+    const dd = now.getDate().toString().padStart(2, '0');
     return `${yyyy}-${mm}-${dd}`;
   });
-  const [activeTab, setActiveTab] = useState('morning');
+  
+  const [activeTab, setActiveTab] = useState(() => {
+    const now = new Date();
+    const currentHour = now.getHours();
+
+    if (currentHour >= 5 && currentHour < 12) {
+      return 'morning';
+    }
+
+    if (currentHour >= 12 && currentHour < 18) {
+      return 'afternoon';
+    }
+
+    if (currentHour >= 18 && currentHour < 24) {
+      return 'evening';
+    }
+
+    // Default fallback
+    return 'morning';
+  });
   const [selectedSlots, setSelectedSlots] = useState([]);
   const [selectedCourt, setSelectedCourt] = useState(null);
   const [user] = useState(() => {
@@ -82,6 +101,56 @@ export default function BookingPage() {
   useEffect(() => {
     fetchCourts();
   }, [fetchCourts]);
+
+  // Set default selected slot based on current time and activeTab after courts are loaded
+  useEffect(() => {
+    if (courts.length === 0) return;
+
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+
+    // Find the closest slot in the activeTab session that is >= current time
+    const slots = TIME_SLOTS[activeTab];
+    let defaultSlot = null;
+
+    for (const slot of slots) {
+      const [slotHour, slotMinute] = slot.split(':').map(Number);
+      if (slotHour > currentHour || (slotHour === currentHour && slotMinute >= currentMinute)) {
+        defaultSlot = slot;
+        break;
+      }
+    }
+
+    // If no slot found (all slots are earlier), pick the last slot
+    if (!defaultSlot) {
+      defaultSlot = slots[slots.length - 1];
+    }
+
+    // Select the default slot for the first court if available and not disabled
+    if (courts.length > 0 && defaultSlot) {
+      const slotKey = `${courts[0].Courts_ID}-${defaultSlot}`;
+
+      // Check if slot is not disabled (not booked and not past time)
+      const nowDateStr = now.toISOString().split('T')[0];
+      const isToday = selectedDate === nowDateStr;
+      const slotDateTime = new Date(selectedDate);
+      slotDateTime.setHours(...defaultSlot.split(':').map(Number), 0, 0);
+      const disableDueToTime = isToday && slotDateTime <= now;
+
+      const isBooked = bookings.some(
+        (booking) =>
+          booking.Courts_ID === courts[0].Courts_ID &&
+          booking.Booking_date === selectedDate &&
+          booking.Start_time.startsWith(defaultSlot)
+      );
+
+      if (!disableDueToTime && !isBooked) {
+        setSelectedSlots([slotKey]);
+        setSelectedCourt(courts[0]);
+      }
+    }
+  }, [courts, activeTab, bookings, selectedDate]);
 
   useEffect(() => {
     fetchBookings();
@@ -422,10 +491,19 @@ export default function BookingPage() {
                   const slotKey = `${court.Courts_ID}-${time}`;
                   const isSelected = selectedSlots.includes(slotKey);
                   
+                  // Determine if the slot should be disabled due to current time and selected date
+                  const now = new Date();
+                  const currentDateStr = now.toISOString().split('T')[0];
+                  const isToday = selectedDate === currentDateStr;
+                  const [slotHour, slotMinute] = time.split(':').map(Number);
+                  const slotDateTime = new Date(selectedDate);
+                  slotDateTime.setHours(slotHour, slotMinute, 0, 0);
+                  const disableDueToTime = isToday && slotDateTime <= now;
+
                   return (
                     <button
                       key={time}
-                      disabled={booked}
+                      disabled={booked || disableDueToTime}
                       onClick={() => {
                         setSelectedCourt(court);
                         handleSlotSelection(court.Courts_ID, time);
@@ -433,22 +511,22 @@ export default function BookingPage() {
                       style={{
                         borderRadius: '8px',
                         border: '1px solid',
-                        borderColor: booked ? '#dc2626' : isSelected ? '#2563eb' : '#22c55e',
+                        borderColor: booked || disableDueToTime ? '#dc2626' : isSelected ? '#2563eb' : '#22c55e',
                         padding: '10px 12px',
                         fontSize: '0.875rem',
                         fontWeight: '600',
                         color: '#fff',
-                        backgroundColor: booked ? '#dc2626' : isSelected ? '#2563eb' : '#22c55e',
-                        cursor: booked ? 'not-allowed' : 'pointer',
+                        backgroundColor: booked || disableDueToTime ? '#dc2626' : isSelected ? '#2563eb' : '#22c55e',
+                        cursor: booked || disableDueToTime ? 'not-allowed' : 'pointer',
                         transition: 'background-color 0.3s ease',
                         userSelect: 'none',
                         boxShadow: isSelected ? '0 0 0 2px #3b82f6' : 'none'
                       }}
                       onMouseEnter={e => {
-                        if (!booked && !isSelected) e.target.style.backgroundColor = '#16a34a';
+                        if (!booked && !disableDueToTime && !isSelected) e.target.style.backgroundColor = '#16a34a';
                       }}
                       onMouseLeave={e => {
-                        if (!booked && !isSelected) e.target.style.backgroundColor = '#22c55e';
+                        if (!booked && !disableDueToTime && !isSelected) e.target.style.backgroundColor = '#22c55e';
                       }}
                     >
                       {time} - {addOneHour(time)}

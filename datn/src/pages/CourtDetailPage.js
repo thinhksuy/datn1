@@ -3,19 +3,66 @@ import axios from 'axios';
 import Header from '../components/home/Header';
 import Footer from '../components/home/Footer';
 
+// Helper to format hour and minute as HH:mm
+const formatTime = (hour, minute = 0) => {
+  const h = hour.toString().padStart(2, '0');
+  const m = minute.toString().padStart(2, '0');
+  return `${h}:${m}`;
+};
+
+// Generate time slots for morning, afternoon, evening
+const TIME_SLOTS = {
+  morning: Array.from({ length: 7 }, (_, i) => formatTime(i + 5)), // 05:00 - 11:00
+  afternoon: Array.from({ length: 6 }, (_, i) => formatTime(i + 12)), // 12:00 - 17:00
+  evening: Array.from({ length: 6 }, (_, i) => formatTime(i + 18)), // 18:00 - 23:00
+};
+
+// Helper to add one hour to a time string HH:mm
+const addOneHour = (time) => {
+  const [h, m] = time.split(':').map(Number);
+  const newHour = (h + 1) % 24;
+  return formatTime(newHour, m);
+};
+
 export default function CourtListPage() {
   const [courts, setCourts] = useState([]);
   const [selectedCourt, setSelectedCourt] = useState(null); // sân đang xem chi tiết
   const [bookings, setBookings] = useState([]);
 
+  // New states for date and time range
+  const [selectedDate, setSelectedDate] = useState(() => {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = (today.getMonth() + 1).toString().padStart(2, '0');
+    const dd = today.getDate().toString().padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  });
+  const [activeTab, setActiveTab] = useState('morning');
+
   useEffect(() => {
-    axios.get('/api/courts')
-      .then(res => setCourts(res.data || []))
-      .catch(err => {
+    const fetchCourts = async () => {
+      try {
+        const times = TIME_SLOTS[activeTab];
+        const start_time = times[0] + ':00';
+        const end_time = addOneHour(times[times.length - 1]) + ':00';
+
+        const res = await axios.get('/api/courts', {
+          params: {
+            date: selectedDate,
+            start_time,
+            end_time
+          }
+        });
+        setCourts(res.data.data || []);
+      } catch (err) {
         console.error('Lỗi khi lấy danh sách sân:', err);
         alert('Không thể tải danh sách sân.');
-      });
-  }, []);
+        setCourts([]);
+      }
+    };
+
+    fetchCourts();
+  }, [selectedDate, activeTab]);
 
   const openDetail = async (court) => {
     setSelectedCourt(court);
@@ -42,6 +89,59 @@ export default function CourtListPage() {
         <h1 style={{ marginBottom: 24, fontSize: 28, fontWeight: 700 }}>
           Danh sách sân cầu lông
         </h1>
+
+        {/* Date selector */}
+        <label style={{ marginBottom: 16, display: 'block', fontWeight: '600' }}>
+          Chọn ngày:{' '}
+          <input
+            type="date"
+            value={selectedDate}
+            onChange={(e) => setSelectedDate(e.target.value)}
+            min={(() => {
+              const today = new Date();
+              const yyyy = today.getFullYear();
+              const mm = (today.getMonth() + 1).toString().padStart(2, '0');
+              const dd = today.getDate().toString().padStart(2, '0');
+              return `${yyyy}-${mm}-${dd}`;
+            })()}
+            style={{ padding: '6px 10px', fontSize: 16, borderRadius: 6, border: '1px solid #ccc' }}
+          />
+        </label>
+
+        {/* Time range tabs */}
+        <div style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
+          {Object.keys(TIME_SLOTS).map((slotKey) => (
+            <button
+              key={slotKey}
+              onClick={() => setActiveTab(slotKey)}
+              style={{
+                padding: '8px 20px',
+                borderRadius: 9999,
+                fontWeight: 600,
+                cursor: 'pointer',
+                backgroundColor: activeTab === slotKey ? '#2563eb' : '#e5e7eb',
+                color: activeTab === slotKey ? '#fff' : '#374151',
+                border: 'none',
+                transition: 'all 0.3s ease',
+                userSelect: 'none',
+              }}
+              onMouseEnter={e => {
+                if (activeTab !== slotKey) e.target.style.backgroundColor = '#3b82f6';
+                if (activeTab !== slotKey) e.target.style.color = '#fff';
+              }}
+              onMouseLeave={e => {
+                if (activeTab !== slotKey) e.target.style.backgroundColor = '#e5e7eb';
+                if (activeTab !== slotKey) e.target.style.color = '#374151';
+              }}
+            >
+              {{
+                morning: 'Buổi sáng',
+                afternoon: 'Buổi chiều',
+                evening: 'Buổi tối'
+              }[slotKey]}
+            </button>
+          ))}
+        </div>
 
         {courts.length === 0 ? (
           <p>Không có sân nào trong hệ thống.</p>
