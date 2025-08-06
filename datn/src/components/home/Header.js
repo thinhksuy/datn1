@@ -410,7 +410,6 @@ const Header = () => {
                                   style={{
                                     background: "none",
                                     border: "none",
-                                    padding: 0,
                                     padding: "8px 12px",
                                     margin: "4px 0",
                                     color: "#007bff",
