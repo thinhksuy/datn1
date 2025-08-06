@@ -369,12 +369,18 @@ export default function BookingPage() {
             onChange={(e) => setSelectedDate(e.target.value)}
             style={{
               marginLeft: '12px',
-              padding: '8px 12px',
-              fontSize: '1rem',
-              borderRadius: '6px',
-              border: '1px solid #d1d5db',
+              padding: '12px 16px',
+              fontSize: '1.25rem',
+              borderRadius: '12px',
+              border: '1.5px solid #3b82f6',
+              backgroundColor: '#f0f9ff',
               outline: 'none',
-              transition: 'border-color 0.3s ease',
+              boxShadow: '0 2px 6px rgba(59, 130, 246, 0.3)',
+              transition: 'border-color 0.3s ease, box-shadow 0.3s ease',
+              color: '#1e40af',
+              fontWeight: '600',
+              cursor: 'pointer',
+              userSelect: 'none',
             }}
             min={(() => {
               const today = new Date();
@@ -383,8 +389,14 @@ export default function BookingPage() {
               const dd = today.getDate().toString().padStart(2, '0');
               return `${yyyy}-${mm}-${dd}`;
             })()}
-            onFocus={e => e.target.style.borderColor = '#2563eb'}
-            onBlur={e => e.target.style.borderColor = '#d1d5db'}
+            onFocus={e => {
+              e.target.style.borderColor = '#2563eb';
+              e.target.style.boxShadow = '0 0 12px rgba(37, 99, 235, 0.8)';
+            }}
+            onBlur={e => {
+              e.target.style.borderColor = '#3b82f6';
+              e.target.style.boxShadow = '0 2px 6px rgba(59, 130, 246, 0.3)';
+            }}
           />
         </label>
 
