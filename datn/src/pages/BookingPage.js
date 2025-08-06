@@ -395,9 +395,6 @@ export default function BookingPage() {
             }}
             onBlur={e => {
               e.target.style.borderColor = '#3b82f6';
-              e.target.style.boxShadow = '0 2px 6px rgba(59, 130, 246, 0.3)';
-            }}
-          />
         </label>
 
         <div style={{
