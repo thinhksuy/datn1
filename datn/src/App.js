@@ -11,6 +11,7 @@ import RegisterPage from "./pages/RegisterPage";
 import BookingPage from "./pages/BookingPage";
 import CourtDetailPage from "./pages/CourtDetailPage";
 import UserProfile from "./pages/UserProfile";
+import ContactPage from "./pages/ContactPage";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/booking" element={<BookingPage />} />
         <Route path="/courts" element={<CourtDetailPage />} />
         <Route path="/profile" element={<UserProfile />} />
+        <Route path="/contact" element={<ContactPage />} />
       </Routes>
     </Router>
   );
