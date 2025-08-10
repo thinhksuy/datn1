@@ -265,13 +265,6 @@ export default function BookingPage() {
     }
   };
 
-  const getSelectedSlotsForCourt = (courtId) => {
-    if (!courtId) return [];
-    return selectedSlots
-      .filter(slot => slot.startsWith(courtId.toString()))
-      .map(slot => slot.split('-')[1])
-      .sort();
-  };
 
   const calculateTotalPrice = () => {
     let total = 0;
